@@ -1,0 +1,415 @@
+Using pre-set license
+Built from '2020.3/staging' branch; Version is '2020.3.30f1 (1fb1bf06830e) revision 2077119'; Using compiler version '192528614'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19044) 64bit Core' Language: 'ko' Physical Memory: 16295 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2020.3.30f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+C:/Users/user/Desktop/Team.JSRunnermusume/RunnerMusume
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+54750
+Successfully changed project path to: C:/Users/user/Desktop/Team.JSRunnermusume/RunnerMusume
+C:/Users/user/Desktop/Team.JSRunnermusume/RunnerMusume
+Using Asset Import Pipeline V2.
+Refreshing native plugins compatible for Editor in 22.08 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2020.3.30f1 (1fb1bf06830e)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.30f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/user/Desktop/Team.JSRunnermusume/RunnerMusume/Assets
+GfxDevice: creating device client; threaded=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 3060 (ID=0x2503)
+    Vendor:   
+    VRAM:     12143 MB
+    Driver:   27.21.14.6172
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.30f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.30f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.30f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56980
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.30f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.003202 seconds.
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 20.39 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.390 seconds
+Domain Reload Profiling:
+	ReloadAssembly (390ms)
+		BeginReloadAssembly (64ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (0ms)
+		EndReloadAssembly (270ms)
+			LoadAssemblies (60ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (81ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (17ms)
+			SetupLoadedEditorAssemblies (100ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (3ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (20ms)
+				BeforeProcessingInitializeOnLoad (11ms)
+				ProcessInitializeOnLoadAttributes (48ms)
+				ProcessInitializeOnLoadMethodAttributes (17ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.003606 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.28 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.650 seconds
+Domain Reload Profiling:
+	ReloadAssembly (650ms)
+		BeginReloadAssembly (114ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (3ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (12ms)
+		EndReloadAssembly (489ms)
+			LoadAssemblies (83ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (148ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (22ms)
+			SetupLoadedEditorAssemblies (204ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (3ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (0ms)
+				BeforeProcessingInitializeOnLoad (60ms)
+				ProcessInitializeOnLoadAttributes (124ms)
+				ProcessInitializeOnLoadMethodAttributes (6ms)
+				AfterProcessingInitializeOnLoad (11ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (4ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
+Refreshing native plugins compatible for Editor in 0.28 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1502 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 68.7 MB.
+System memory in use after: 68.8 MB.
+
+Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 1937.
+Total: 1.919000 ms (FindLiveObjects: 0.074700 ms CreateObjectMapping: 0.026500 ms MarkObjects: 1.772500 ms  DeleteObjects: 0.044700 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  path: Assets/Must Have Studio
+  artifactKey: Guid(4b630077382865a48bd49190cb9dcabd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio using Guid(4b630077382865a48bd49190cb9dcabd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fa606badecc84b414d55e8cea70b6fb0') in 0.003692 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.087422 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City
+  artifactKey: Guid(516bfd5c73735ef4cb1308d6c6b5b184) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City using Guid(516bfd5c73735ef4cb1308d6c6b5b184) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9e819cf4f7b87962facfc5be87c07e71') in 0.001996 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 3.773092 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Scene
+  artifactKey: Guid(12a2f67e113a2cd449a6bdf7e39c79f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Scene using Guid(12a2f67e113a2cd449a6bdf7e39c79f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ca85df3004e8a222b33e27d011ec759e') in 0.001952 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 2.291776 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Scene/Demo-scene.unity
+  artifactKey: Guid(8e652eab53fe24e459e5e3c6b64cb904) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Scene/Demo-scene.unity using Guid(8e652eab53fe24e459e5e3c6b64cb904) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e365dd7129c476cd2c39d5cc98c24e21') in 0.006721 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 30.927725 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Scene/Demo-scene
+  artifactKey: Guid(70208216c3b437840b6397fa727c4564) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Scene/Demo-scene using Guid(70208216c3b437840b6397fa727c4564) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '68a7229185aa4a46c02d61c4f9d85fe6') in 0.002023 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.074286 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Scene/Demo-scene/LightingData.asset
+  artifactKey: Guid(a0d957b0470ca5e45acbf8b64be692f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Scene/Demo-scene/LightingData.asset using Guid(a0d957b0470ca5e45acbf8b64be692f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '467f078ba16f7c180001b8811eeb0ae4') in 0.013600 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000078 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Scene/Demo-scene/ReflectionProbe-1.exr
+  artifactKey: Guid(436c44540f290b142b790711c6952911) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Scene/Demo-scene/ReflectionProbe-1.exr using Guid(436c44540f290b142b790711c6952911) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '800fe92ce53708ca5cfb8378d234090d') in 0.089377 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000092 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Scene/Demo-scene/ReflectionProbe-0.exr
+  artifactKey: Guid(ba5b2caf01d61b647ab9edf125a9320f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Scene/Demo-scene/ReflectionProbe-0.exr using Guid(ba5b2caf01d61b647ab9edf125a9320f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dfdc5e8d76edfccc9bdc349af5a143b2') in 0.008375 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 2.565997 seconds.
+  path: Assets/Scenes
+  artifactKey: Guid(2413c8b94ea1cf745931abfa4f8255cd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes using Guid(2413c8b94ea1cf745931abfa4f8255cd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2f2716800fba009801241a41e034cc6d') in 0.002557 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 6.939614 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Textures
+  artifactKey: Guid(df39c0353d24ce243a3c2ab57e329b04) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Textures using Guid(df39c0353d24ce243a3c2ab57e329b04) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5edf3c62551cd01520c8aad964297be9') in 0.002111 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 2.957178 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Read me.txt
+  artifactKey: Guid(3732103b21a2e4a4e924355842e37a9e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Read me.txt using Guid(3732103b21a2e4a4e924355842e37a9e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a7ca654d1215a936685796b91f87402c') in 0.006869 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.961421 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Textures/Color 2.png
+  artifactKey: Guid(419bfe06ac0cb1648af5bf39373c6cd3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Textures/Color 2.png using Guid(419bfe06ac0cb1648af5bf39373c6cd3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5fbcbe6e5a4fae2aae87e728135058dd') in 0.024387 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000098 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Textures/Terrain_Texture.png
+  artifactKey: Guid(5e644554e01cf644d8a473c421925ecb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Textures/Terrain_Texture.png using Guid(5e644554e01cf644d8a473c421925ecb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd9de00bf949890c4622a9f86db440444') in 0.016219 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000075 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Textures/LowPolyCity_Texture_Diff.png
+  artifactKey: Guid(0ecc015e5aa12604cb5a76b7c46cafc7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Textures/LowPolyCity_Texture_Diff.png using Guid(0ecc015e5aa12604cb5a76b7c46cafc7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '59bc31e5b8ba0ef3b2716dc75ef2eefc') in 0.014568 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000087 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Textures/LowPolyCity_Texture_Emission.png
+  artifactKey: Guid(1e931a09508d6674b9dfc869b33417ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Textures/LowPolyCity_Texture_Emission.png using Guid(1e931a09508d6674b9dfc869b33417ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c4a3caea7e3d3fad113a01fcb49b3d38') in 0.006485 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000086 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Textures/Emission.png
+  artifactKey: Guid(7c0d171e0dc01ec43b8a6986cdbcc1cd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Textures/Emission.png using Guid(7c0d171e0dc01ec43b8a6986cdbcc1cd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6091be59d6e7c69a8fdb42d59d84e7e9') in 0.005728 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 11.163033 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Materials
+  artifactKey: Guid(8bbee975434c3f94cb86275b6ffd41b5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Materials using Guid(8bbee975434c3f94cb86275b6ffd41b5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '13699fac328939da92301cde29323c12') in 0.002437 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.068735 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Materials/cutoutWhite.mat
+  artifactKey: Guid(2a051f7710e7b7746af729a0475fa0bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Materials/cutoutWhite.mat using Guid(2a051f7710e7b7746af729a0475fa0bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1c09cbef125b0265e7f3309505d2ea0f') in 0.051842 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000120 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Materials/White.mat
+  artifactKey: Guid(bca6d3583fbb11b4db1f69369a3526e2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Materials/White.mat using Guid(bca6d3583fbb11b4db1f69369a3526e2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fcd7bf4da3630d4fe9280709ddae266e') in 1.118785 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000099 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Materials/LowPolyCity_Mat.mat
+  artifactKey: Guid(5509d2dbc01ec2f4d8213bb679f3d263) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Materials/LowPolyCity_Mat.mat using Guid(5509d2dbc01ec2f4d8213bb679f3d263) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8554e2200e147fa767490f0b985e641b') in 0.029887 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000110 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Materials/MainMaterial.mat
+  artifactKey: Guid(49634c222d567f048a18ad3b0fbce5bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Materials/MainMaterial.mat using Guid(49634c222d567f048a18ad3b0fbce5bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6af6d0ccc259fa9e54c5463e71bc0276') in 0.031238 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000091 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Materials/for showroom.mat
+  artifactKey: Guid(77d1cf069d216e048983688d9858ddd2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Materials/for showroom.mat using Guid(77d1cf069d216e048983688d9858ddd2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'aa68cf298b7b92753bf27fcdc4f1c797') in 0.194514 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000104 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Materials/Terrain.mat
+  artifactKey: Guid(c5673d0a9a98e414daf4113a59a4e081) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Materials/Terrain.mat using Guid(c5673d0a9a98e414daf4113a59a4e081) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ea93adf7a0b2cd9e54715c15a05b89ab') in 0.007076 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000081 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Materials/sky.mat
+  artifactKey: Guid(b0064816bf787cc41acbdf23330db8ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Materials/sky.mat using Guid(b0064816bf787cc41acbdf23330db8ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4c683d8a627ddbefb4dbeaf765620df8') in 0.020828 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.873368 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Models
+  artifactKey: Guid(6f4fb137c7e6db94f84b2683794b23f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Models using Guid(6f4fb137c7e6db94f84b2683794b23f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '887347ea12dc419551e164bcab5093ed') in 0.002101 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.072051 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Models/Terrain.fbx
+  artifactKey: Guid(2b44b3f7a5a0b03408960713aad45b91) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Models/Terrain.fbx using Guid(2b44b3f7a5a0b03408960713aad45b91) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4184d3d309c6d57e637d2042f5fd35a7') in 0.047451 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 4.060059 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings
+  artifactKey: Guid(2c1b53161461d70419f5200357199820) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings using Guid(2c1b53161461d70419f5200357199820) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2e38333a809a5c00619cde23584d043b') in 0.002243 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.070654 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_AutoShop.fbx
+  artifactKey: Guid(f35eaa239a6dfa2459bc8e90cff947fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_AutoShop.fbx using Guid(f35eaa239a6dfa2459bc8e90cff947fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '49a52b617b0e53442c0169ecf62261df') in 0.030355 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000097 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Gas_Station.fbx
+  artifactKey: Guid(c70d709bec09fd945879da572deca8e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Gas_Station.fbx using Guid(c70d709bec09fd945879da572deca8e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd5633883d78b507be8652c559cc5690e') in 0.071140 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000099 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Cafe.fbx
+  artifactKey: Guid(8ca798d3b889b5d45a1f0d445d2dc4eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Cafe.fbx using Guid(8ca798d3b889b5d45a1f0d445d2dc4eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0983409e4ccf9a40edee07b86fc472e7') in 0.037223 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000099 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Dormitory_2.fbx
+  artifactKey: Guid(92eedd788d8ded746b3e6a5d4b1e7fa0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Dormitory_2.fbx using Guid(92eedd788d8ded746b3e6a5d4b1e7fa0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2a361a9fb52d776930332406e1eff6d4') in 0.042820 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000089 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Dormitory_3.fbx
+  artifactKey: Guid(ea58f80cd97662f4db3a14cd6261b2b8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Dormitory_3.fbx using Guid(ea58f80cd97662f4db3a14cd6261b2b8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e4fb51848fa58ed7eec8f9acb78801bd') in 0.013753 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000098 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Clothing.fbx
+  artifactKey: Guid(97da5a7a98cbf4d409cca227783dbc27) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Clothing.fbx using Guid(97da5a7a98cbf4d409cca227783dbc27) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b131b53cc0041a1d19ce34798f753406') in 0.014290 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000098 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Bakery.fbx
+  artifactKey: Guid(d1f992642eca0ae4f9b9493408262bf9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Bakery.fbx using Guid(d1f992642eca0ae4f9b9493408262bf9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7d728676b6066ad36c3e52a887ee28e2') in 0.013334 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000116 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Dormitory_1.fbx
+  artifactKey: Guid(656ebb0d0e07e0e488d7dba34aaae4a5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Dormitory_1.fbx using Guid(656ebb0d0e07e0e488d7dba34aaae4a5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c293511742d0d9ecaff8b53f716a8746') in 0.013092 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000107 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Bus_station.fbx
+  artifactKey: Guid(c7808d8dc14a41c4b9003a7bede316bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Bus_station.fbx using Guid(c7808d8dc14a41c4b9003a7bede316bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f41c5553b8d6d52f19d443c67699342a') in 0.013169 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000098 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Bank.fbx
+  artifactKey: Guid(6fe8fb001fd68a24c9fb9bf08809208e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Models/Buildings/Bld_Bank.fbx using Guid(6fe8fb001fd68a24c9fb9bf08809208e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd78b155b47f325d8ca6d1f67c2287fe1') in 0.013086 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 14.122375 seconds.
+  path: Assets/Must Have Studio/Asheville. Low Poly City/Scene/Showroom.unity
+  artifactKey: Guid(aca0149b07044e344b30b9eca7ba13a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Must Have Studio/Asheville. Low Poly City/Scene/Showroom.unity using Guid(aca0149b07044e344b30b9eca7ba13a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a3761e4d9dd85cc2f74b4040a822460c') in 0.002494 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.003340 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.28 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.616 seconds
+Domain Reload Profiling:
+	ReloadAssembly (616ms)
+		BeginReloadAssembly (98ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (2ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (20ms)
+		EndReloadAssembly (470ms)
+			LoadAssemblies (82ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (145ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (20ms)
+			SetupLoadedEditorAssemblies (191ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (3ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (0ms)
+				BeforeProcessingInitializeOnLoad (56ms)
+				ProcessInitializeOnLoadAttributes (114ms)
+				ProcessInitializeOnLoadMethodAttributes (6ms)
+				AfterProcessingInitializeOnLoad (12ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (4ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.28 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1496 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 143.9 MB.
+System memory in use after: 144.0 MB.
+
+Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 1987.
+Total: 1.922100 ms (FindLiveObjects: 0.078100 ms CreateObjectMapping: 0.028000 ms MarkObjects: 1.791100 ms  DeleteObjects: 0.024300 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
