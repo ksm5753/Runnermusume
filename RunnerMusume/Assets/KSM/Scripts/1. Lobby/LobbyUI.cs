@@ -7,23 +7,7 @@ using System;
 
 public partial class LobbyUI : MonoBehaviour
 {
-    [Header("Menu Button")]
-
-    public Toggle[] menuButtons;
-    public GameObject mainParent;
-    public Scrollbar scrollBar;
-    public float swipeTime = 0.01f;
-    public float swipeDistance = 50.0f;
-
-    private float[] scrollPageValues;
-    private float valueDistance = 0;
-    private int currentPage = 0;
-    private int maxPage = 0;
-    private float startTouchX;
-    private float endTouchX;
-    private bool isSwipeMode = false;
-
-    [Space(15f)]
+    [Space(25f)]
     [Header("< Energy Panel >")]
     public GameObject energyCountText;
     public Text energyTimerText;
@@ -35,17 +19,30 @@ public partial class LobbyUI : MonoBehaviour
     private Coroutine rechargeTimerCoroutine = null;
     private float rechargeRemainTime = 0;
 
-    [Space(15f)]
+    [Space(25f)]
+    [Header("< Coin Panel >")]
+    public Text goldText;
+    public Text diamondText;
+
+    [Space(25f)]
     [Header("< Energy Shop Panel >")]
     public GameObject energyShopPanel;
 
-    [Space(15f)]
-    [Header("Error Object")]
+    [Space(25f)]
+    [Header("< Close App Object >")]
+    public GameObject closeAppPanel; //에러 창
+
+    [Space(25f)]
+    [Header("< Error Object >")]
     public GameObject errorObject; //에러 창
 
-    [Space(15f)]
-    [Header("Loading Object")]
+    [Space(25f)]
+    [Header("< Loading Object >")]
     public GameObject loadingObject; //로딩 창
+
+    [Space(25f)]
+    [Header("< GAMER ID >")]
+    public GameObject gamerIDText; //에러 창
 
     private static LobbyUI instance;
 
@@ -58,35 +55,77 @@ public partial class LobbyUI : MonoBehaviour
     void Awake()
     {
         if (!instance) instance = this;
-        //SetMainUI();
     }
 
     void Start()
     {
-        SoundManager.GetInstance().PlayBGM(0);
+        SetSound();                                                                             //배경음 설정
+        BackendServerManager.GetInstance().InitialUserCheck();                                  //신규 유저 체크
 
-        SetMainUI();
+        BackendServerManager.GetInstance().RefreshInfo();                                       //새로고침
 
-        BackendServerManager.GetInstance().RefreshInfo();
+        #region 장비 정보 불러오기
+        loadingObject.SetActive(true);
+        BackendServerManager.GetInstance().GetEquipment((bool result, string error) =>          //장비 정보 불러오기
+        {
+            Dispatcher.Current.BeginInvoke(() =>
+            {
+                loadingObject.SetActive(false);
+                if (result)
+                {
+                    BackendServerManager.GetInstance().SetEquipment();
+                    return;
+                }
+                errorObject.GetComponentInChildren<Text>().text = error;
+                errorObject.SetActive(true);
+            });
+        });
+        #endregion
+
+        #region 상점 정보 불러오기
+        loadingObject.SetActive(true);
+        BackendServerManager.GetInstance().GetShopSheet((bool result, string error) =>          //장비 정보 불러오기
+        {
+            Dispatcher.Current.BeginInvoke(() =>
+            {
+                loadingObject.SetActive(false);
+                if (result)
+                {
+                    print("상점 정보 불러오기 성공");
+                    return;
+                }
+                errorObject.GetComponentInChildren<Text>().text = error;
+                errorObject.SetActive(true);
+            });
+        });
+        #endregion
+
+
+        gamerIDText.GetComponentInChildren<Text>().text = "User ID : " + BackendServerManager.GetInstance().user_ID;
+
     }
 
     void Update()
     {
-        UpdateInput();
+        UpdateInput(); //화면 스와이프
+
+        //게임 종료
+        if (Input.GetKey(KeyCode.Escape))
+            closeAppPanel.SetActive(true);
+
     }
+
+    public void QuitGame() => Application.Quit();
 
     //게임 초기화, 중간 이탈, 중간 복귀 시 실행되는 함수
     public void OnApplicationFocus(bool focus)
     {
         if (focus)
-        {
             BackendServerManager.GetInstance().RefreshInfo();
-            print("성공띠");
-        }
+
         else
         {
             BackendServerManager.GetInstance().SaveEnergyInfo();
-            print("성공띠2");
 
             if (rechargeTimerCoroutine != null)
                 StopCoroutine(rechargeTimerCoroutine);
@@ -99,6 +138,19 @@ public partial class LobbyUI : MonoBehaviour
         BackendServerManager.GetInstance().SaveEnergyInfo();
     }
 
+    #region 배경음 설정
+    private void SetSound()
+    {
+        SoundManager.GetInstance().SetBGM("Lobby");
+        SoundManager.GetInstance().PlayBGM(true);
+    }
+    #endregion
+
+    #region 버튼 효과음
+    public void PlayEffect() => SoundManager.GetInstance().PlayEffect(true);
+    #endregion
+
+    #region 에너지 정보 수정
     public bool LoadAppQuitTime()
     {
         bool result = false;
@@ -148,7 +200,7 @@ public partial class LobbyUI : MonoBehaviour
 
     public void SetRechargeScheduler(Action onFinish = null)
     {
-        
+
         if (rechargeTimerCoroutine != null)
             StopCoroutine(rechargeTimerCoroutine);
 
@@ -167,14 +219,15 @@ public partial class LobbyUI : MonoBehaviour
         if (timeDifferenceInSec > 0)
         {
             timeDifferenceInSec = PlayerPrefs.GetFloat("RemainTime") - timeDifferenceInSec;
-            print("setRechargeScheduler : " + timeDifferenceInSec);
 
             if (timeDifferenceInSec <= 0)
             {
                 energyAmount++;
+
+                if (energyAmount >= energyMax)
+                    energyAmount = energyMax;
                 timeDifferenceInSec = Mathf.Abs(timeDifferenceInSec);
                 energyToAdd = Mathf.FloorToInt(timeDifferenceInSec / energyRechargeInterval);
-                print("A : Energy to add : " + energyToAdd);
                 if (energyToAdd == 0)
                     remainTime = energyRechargeInterval - timeDifferenceInSec;
                 else
@@ -183,13 +236,10 @@ public partial class LobbyUI : MonoBehaviour
             else
             {
                 energyToAdd = Mathf.FloorToInt(timeDifferenceInSec / energyRechargeInterval);
-                print("B : Energy to add " + energyToAdd);
                 if (energyToAdd == 0)
                     remainTime = PlayerPrefs.GetFloat("RemainTime") - originTimeDifferenceInSec;
             }
 
-            print("RemainTime : " + remainTime);
-            print(energyAmount + ", " + energyToAdd);
             energyAmount += energyToAdd;
         }
 
@@ -198,14 +248,12 @@ public partial class LobbyUI : MonoBehaviour
 
         if (energyAmount >= energyMax)
         {
-            //energyAmount = energyMax;
+            energyAmount = energyMax;
 
             SetEnergyText(energyAmount + " / " + energyMax);
         }
         else
             rechargeTimerCoroutine = StartCoroutine(DoRechargeTimer(remainTime, onFinish));
-
-        print("현재 에너지 개수 : " + energyAmount);
     }
 
     public void UseEnergy(int amount, Action onFinish = null)
@@ -226,8 +274,7 @@ public partial class LobbyUI : MonoBehaviour
     {
         if (energyAmount >= energyMax)
         {
-            print("검열");
-            rechargeRemainTime = energyRechargeInterval;
+            rechargeRemainTime = 0;
             StopAllCoroutines();
             SetEnergyText(energyAmount + " / " + energyMax);
         }
@@ -240,7 +287,6 @@ public partial class LobbyUI : MonoBehaviour
 
             while (rechargeRemainTime > 0)
             {
-                print("재충전 남은 시간 : " + rechargeRemainTime);
                 SetEnergyText(energyAmount + " / " + energyMax, ((int)rechargeRemainTime / 60) + " : " + string.Format("{0:D2}", (int)rechargeRemainTime % 60));
                 rechargeRemainTime--;
 
@@ -251,8 +297,8 @@ public partial class LobbyUI : MonoBehaviour
 
             if (energyAmount >= energyMax)
             {
+                energyAmount = energyMax;
                 rechargeRemainTime = 0;
-                print("에너지가 가득 찼습니다.");
                 SetEnergyText(energyAmount + " / " + energyMax);
                 rechargeTimerCoroutine = null;
             }
@@ -261,7 +307,6 @@ public partial class LobbyUI : MonoBehaviour
                 rechargeTimerCoroutine = StartCoroutine(DoRechargeTimer(energyRechargeInterval, onFinish));
             }
 
-            print("에너지 개수 : " + energyAmount);
         }
     }
     public void OnClickEnergy(int amount)
@@ -269,13 +314,12 @@ public partial class LobbyUI : MonoBehaviour
         print("에너지 사용");
         UseEnergy(amount);
     }
+    #endregion
 
-    //===================================================================
     #region 해상도 대응
     public void SetScale()
     {
         SetMainUI();
-        SetScrollBarValue(1, false);
         bgmToggle.isOn = PlayerPrefs.GetInt("BGM_Mute") == 0 ? true : false; //배경음 설정
         effectToggle.isOn = PlayerPrefs.GetInt("Effect_Mute") == 0 ? true : false; //효과음 설정
 
@@ -285,162 +329,20 @@ public partial class LobbyUI : MonoBehaviour
         effect_On.SetActive(PlayerPrefs.GetInt("Effect_Mute") == 0 ? true : false);
         effect_Off.SetActive(PlayerPrefs.GetInt("Effect_Mute") == 0 ? false : true);
 
+        matchDonePanel.SetActive(false);
+        matchRequestPanel.SetActive(false);
+        closeAppPanel.SetActive(false);
         energyShopPanel.SetActive(false);
         loadingObject.SetActive(false);
         errorObject.SetActive(false);
-    }
-    #endregion
-    //===================================================================
-    #region 메인 화면 설정
-
-    public void SetMainUI()
-    {
-        //스크롤 되는 페이지의 각 value 값을 저장하는 배열 메모리 할당
-        scrollPageValues = new float[mainParent.transform.childCount];
-
-        //스크롤 되는 페이지 사이의 거리
-        valueDistance = 1f / (scrollPageValues.Length - 1f);
-
-        //스크롤 되는 페이지의 각 value 위치 설정 [0 <= value <= 1]
-        for (int i = 0; i < scrollPageValues.Length; i++)
-            scrollPageValues[i] = valueDistance * i;
-
-        //최대 페이지의 수
-        maxPage = mainParent.transform.childCount;
-    }
-
-    public void SetScrollValue(int index)
-    {
-        if (index == currentPage) return;
-        currentPage = index;
-        scrollBar.value = scrollPageValues[index];
-
-        StartCoroutine(OnSwipeOneStep(currentPage));
-
-        SoundManager.GetInstance().PlayEffect(0);
-    }
-    public void SetScrollBarValue(int index, bool mode = true)
-    {
-        currentPage = index;
-
-        if (!mode)
-            scrollBar.value = scrollPageValues[index];
-
-        StartCoroutine(OnSwipeOneStep(currentPage));
-    }
-
-    private void UpdateInput()
-    {
-        if (isSwipeMode) return;
-
-#if UNITY_EDITOR
-        if (Input.GetMouseButtonDown(0))
-            startTouchX = Input.mousePosition.x;
-        else if (Input.GetMouseButtonUp(0))
-        {
-            endTouchX = Input.mousePosition.x;
-            UpdateSwipe();
-        }
-#endif
-
-#if UNITY_ANDROID
-        if (Input.touchCount == 1)
-        {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
-            {
-                //터치 시작 지점(Swipe 방향 구분)
-                startTouchX = Input.mousePosition.x;
-            }
-            else if (touch.phase == TouchPhase.Ended)
-            {
-                //터치 종료 지점 (Swipe 방향 구분)
-                endTouchX = Input.mousePosition.x;
-                UpdateSwipe();
-            }
-        }
-#endif
-    }
-    private void UpdateSwipe()
-    {
-        //너무 작은 거리를 움직였을 때는 Swipe X
-        if (Mathf.Abs(startTouchX - endTouchX) < swipeDistance)
-        {
-            //원래 페이지로 Swipe해서 돌아간다
-            StartCoroutine(OnSwipeOneStep(currentPage));
-            return;
-        }
-
-        //Swipe 방향
-        bool isLeft = startTouchX < endTouchX ? true : false;
-
-        //이동 방향이 왼쪽일 때
-        if (isLeft)
-        {
-            //현재 페이지가 왼쪽 끝이면 종료
-            if (currentPage == 0) return;
-
-            //왼쪽으로 이동을 위해 현재 페이지를 1 감소
-            currentPage--;
-        }
-
-        //이동 방향이 오른쪽일 때
-        else
-        {
-            //현재 페이지가 오른쪽 끝이면 종료
-            if (currentPage == maxPage - 1) return;
-
-            //오른쪽으로 이동을 위해 현재 페이지를 1 증가
-            currentPage++;
-        }
-
-        //currentIndex 번째 페이지로 Swipe해서 이동
-        StartCoroutine(OnSwipeOneStep(currentPage));
-    }
-
-    private IEnumerator OnSwipeOneStep(int index)
-    {
-        float start = scrollBar.value;
-        float current = 0;
-        float percent = 0;
-
-        isSwipeMode = true;
-
-        while (percent < 1)
-        {
-            current += Time.deltaTime;
-            percent = current / swipeTime;
-
-            scrollBar.value = Mathf.Lerp(start, scrollPageValues[index], percent);
-            menuButtons[currentPage].isOn = true;
-            yield return null;
-        }
 
         isSwipeMode = false;
-    }
 
-    public void MoveMenu(Toggle toggle)
-    {
-        if (toggle.isOn)
-        {
-            switch (toggle.name)
-            {
-                case "ShopButton":
-                    SetScrollBarValue(0);
-                    break;
-                case "HomeButton":
-                    SetScrollBarValue(1);
-
-                    break;
-                case "SettingButton":
-                    SetScrollBarValue(2);
-
-                    break;
-            }
-        }
+        SetScrollBarValue(1, false);
+        isLoading = true;
     }
     #endregion
-    //===================================================================
+
     #region 로그아웃
     public void LogOut()
     {
@@ -448,7 +350,8 @@ public partial class LobbyUI : MonoBehaviour
         GameManager.GetInstance().ChangeState(GameManager.GameState.Login);
     }
     #endregion
-    //===================================================================
+
+    #region 에너지 텍스트 수정
     public void SetEnergyText(string energyCount, string energyTimer = "")
     {
         energyCountText.GetComponent<Text>().text = energyCount;
@@ -456,4 +359,21 @@ public partial class LobbyUI : MonoBehaviour
         energyBar.maxValue = energyMax;
         energyBar.value = energyAmount;
     }
+    #endregion
+
+    #region 유저아이디 복사
+    public void CopyID()
+    {
+        UniClipboard.SetText(BackendServerManager.GetInstance().user_ID);
+        errorObject.GetComponentInChildren<Text>().text = "유저 아이디를 복사했습니다.";
+        errorObject.SetActive(true);
+    }
+    #endregion
+
+    #region 로딩 오브젝트 ON/OFF
+    public void SetLoadingObject(bool isActive)
+    {
+        loadingObject.SetActive(isActive);
+    }
+    #endregion
 }

@@ -10,8 +10,21 @@ public class SoundManager : MonoBehaviour
     public AudioSource bgmSource;
     public AudioSource effectSource;
 
-    public AudioClip[] bgmClips;
-    public AudioClip[] effectClips;
+    [System.Serializable]
+    public struct bgmType
+    {
+        public string name;
+        public AudioClip bgmClip;
+    }
+    public bgmType[] bgmList;
+
+    [System.Serializable]
+    public struct effectType
+    {
+        public string name;
+        public AudioClip effectClip;
+    }
+    public effectType[] effectList;
 
     public static SoundManager GetInstance()
     {
@@ -45,27 +58,45 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void SetBGM(bool isMute)
+    public void MuteBGM(bool isMute)
     {
         bgmSource.mute = isMute;
         PlayerPrefs.SetInt("BGM_Mute", (isMute) ? 1 : 0);
     }
 
-    public void SetEffect(bool isMute)
+    public void MuteEffect(bool isMute)
     {
         effectSource.mute = isMute;
         PlayerPrefs.SetInt("Effect_Mute", (isMute) ? 1 : 0);
     }
 
-    public void PlayBGM(int num)
+    public void SetBGM(string name)
     {
-        bgmSource.clip = bgmClips[num];
-        bgmSource.Play();
+        for(int i = 0; i < bgmList.Length; i++)
+            if (bgmList[i].name.Equals(name))
+                bgmSource.clip = bgmList[i].bgmClip;
     }
 
-    public void PlayEffect(int num)
+    public void SetEffect(string name)
     {
-        effectSource.clip = effectClips[num];
-        effectSource.Play();
+        for (int i = 0; i < effectList.Length; i++)
+            if (effectList[i].name.Equals(name))
+                effectSource.clip = effectList[i].effectClip;
+    }
+
+    public void PlayBGM(bool isPlay)
+    {
+        if (isPlay)
+            bgmSource.Play();
+        else
+            bgmSource.Pause();
+    }
+
+    public void PlayEffect(bool isPlay)
+    {
+        if (isPlay)
+            effectSource.Play();
+        else
+            effectSource.Pause();
     }
 }

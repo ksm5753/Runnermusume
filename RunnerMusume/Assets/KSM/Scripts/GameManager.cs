@@ -11,9 +11,10 @@ public class GameManager : MonoBehaviour
     #region Scene
     private const string LOGIN = "0. Login";
     private const string LOBBY = "1. Lobby";
+    private const string READY = "2. READY";
     #endregion
 
-    public enum GameState { Login, Lobby};
+    public enum GameState { Login, Lobby, Ready};
     private GameState gameState;
 
     public static GameManager GetInstance()
@@ -41,6 +42,9 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Lobby:
                 ChangeScene(LOBBY);
+                break;
+            case GameState.Ready:
+                ChangeScene(READY);
                 break;
         }
     }

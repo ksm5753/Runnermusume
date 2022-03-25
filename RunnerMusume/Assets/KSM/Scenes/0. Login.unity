@@ -542,7 +542,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5bb6d2225294e8846b360e92d25f607c, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 5b3a5e124873681419a4aa5269509f43, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.3
   m_Pitch: 1
@@ -739,10 +739,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgmSource: {fileID: 1620993066}
   effectSource: {fileID: 160381538}
-  bgmClips:
-  - {fileID: 8300000, guid: 7630b0572cb5beb4db6ac986c9efb525, type: 3}
-  effectClips:
-  - {fileID: 8300000, guid: 5bb6d2225294e8846b360e92d25f607c, type: 3}
+  bgmList:
+  - name: Lobby
+    bgmClip: {fileID: 8300000, guid: 7630b0572cb5beb4db6ac986c9efb525, type: 3}
+  effectList:
+  - name: Button
+    effectClip: {fileID: 8300000, guid: 5b3a5e124873681419a4aa5269509f43, type: 3}
 --- !u!4 &240729422
 Transform:
   m_ObjectHideFlags: 0
@@ -1373,7 +1375,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &734806237
 GameObject:
@@ -1467,6 +1469,7 @@ GameObject:
   - component: {fileID: 821882078}
   - component: {fileID: 821882080}
   - component: {fileID: 821882081}
+  - component: {fileID: 821882082}
   m_Layer: 0
   m_Name: ServerManager
   m_TagString: Untagged
@@ -1486,7 +1489,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2813a7081cb07bd4496a2cdb5e34131e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  equipmentCode: 44590
+  shopCode: 44685
   appleToken: 
+  userIndate: 
+  user_ID: 
   rankUuid: 
 --- !u!4 &821882079
 Transform:
@@ -1500,7 +1507,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &821882080
 MonoBehaviour:
@@ -1526,6 +1533,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7140c56c72cb4b44ba191242cb642c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &821882082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821882077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ee7cca822d12164da66db4cece95521, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sessionIdList: 
+  isConnectMatchServer: 0
+  isConnectInGameServer: 0
+  isJoinGameRoom: 0
+  isSandBoxGame: 0
+  hostSession: 0
 --- !u!1 &836505789
 GameObject:
   m_ObjectHideFlags: 0
@@ -2078,12 +2103,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1162390401}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1162390403
 MonoBehaviour:

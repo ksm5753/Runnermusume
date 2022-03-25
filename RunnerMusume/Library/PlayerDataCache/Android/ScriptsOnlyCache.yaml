@@ -1,6 +1,8 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - BackendMatchManager
+    - BackendRoomManager
     - BackendServerManager
     - Battlehub.Dispatcher.Dispatcher
     - CustomScrollRect
@@ -9,6 +11,7 @@ ScriptsOnlyBuild:
     - InAppPurchaser
     - LobbyUI
     - LoginUI
+    - RoomPlayer
     - ScaleCtrl
     - SendQueueMgr
     - SoundManager
@@ -89,53 +92,55 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1580}
-    - Class: 114
-      Script: {instanceID: 1584}
+      Script: {instanceID: 1582}
     - Class: 114
       Script: {instanceID: 1586}
     - Class: 114
-      Script: {instanceID: 1596}
+      Script: {instanceID: 1588}
     - Class: 114
-      Script: {instanceID: 1920}
+      Script: {instanceID: 1598}
     - Class: 114
-      Script: {instanceID: 2292}
+      Script: {instanceID: 1926}
     - Class: 114
-      Script: {instanceID: 2308}
+      Script: {instanceID: 2300}
     - Class: 114
-      Script: {instanceID: 2398}
+      Script: {instanceID: 2316}
     - Class: 114
-      Script: {instanceID: 2700}
+      Script: {instanceID: 2406}
     - Class: 114
-      Script: {instanceID: 2848}
+      Script: {instanceID: 2654}
     - Class: 114
-      Script: {instanceID: 3086}
+      Script: {instanceID: 2712}
     - Class: 114
-      Script: {instanceID: 3152}
+      Script: {instanceID: 2860}
     - Class: 114
-      Script: {instanceID: 3332}
+      Script: {instanceID: 3100}
     - Class: 114
-      Script: {instanceID: 3510}
+      Script: {instanceID: 3166}
     - Class: 114
-      Script: {instanceID: 3592}
+      Script: {instanceID: 3348}
     - Class: 114
-      Script: {instanceID: 3630}
+      Script: {instanceID: 3526}
     - Class: 114
-      Script: {instanceID: 3654}
+      Script: {instanceID: 3608}
     - Class: 114
-      Script: {instanceID: 3780}
+      Script: {instanceID: 3646}
     - Class: 114
-      Script: {instanceID: 4662}
+      Script: {instanceID: 3670}
     - Class: 114
-      Script: {instanceID: 4970}
+      Script: {instanceID: 3796}
+    - Class: 114
+      Script: {instanceID: 4680}
     - Class: 114
       Script: {instanceID: 4990}
     - Class: 114
-      Script: {instanceID: 5006}
+      Script: {instanceID: 5010}
     - Class: 114
-      Script: {instanceID: 5124}
+      Script: {instanceID: 5026}
     - Class: 114
-      Script: {instanceID: 5316}
+      Script: {instanceID: 5148}
+    - Class: 114
+      Script: {instanceID: 5342}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -176,53 +181,108 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1580}
+      Script: {instanceID: 1582}
     - Class: 114
-      Script: {instanceID: 1584}
-    - Class: 114
-      Script: {instanceID: 1588}
+      Script: {instanceID: 1586}
     - Class: 114
       Script: {instanceID: 1590}
     - Class: 114
       Script: {instanceID: 1592}
     - Class: 114
-      Script: {instanceID: 1596}
+      Script: {instanceID: 1594}
     - Class: 114
       Script: {instanceID: 1598}
     - Class: 114
-      Script: {instanceID: 2308}
+      Script: {instanceID: 1600}
     - Class: 114
-      Script: {instanceID: 2700}
+      Script: {instanceID: 2316}
     - Class: 114
-      Script: {instanceID: 2848}
+      Script: {instanceID: 2712}
     - Class: 114
-      Script: {instanceID: 3086}
+      Script: {instanceID: 2860}
     - Class: 114
-      Script: {instanceID: 3150}
+      Script: {instanceID: 3100}
     - Class: 114
-      Script: {instanceID: 3332}
+      Script: {instanceID: 3164}
     - Class: 114
-      Script: {instanceID: 3342}
+      Script: {instanceID: 3348}
     - Class: 114
-      Script: {instanceID: 3436}
+      Script: {instanceID: 3358}
     - Class: 114
-      Script: {instanceID: 3510}
+      Script: {instanceID: 3452}
     - Class: 114
-      Script: {instanceID: 3630}
+      Script: {instanceID: 3526}
     - Class: 114
-      Script: {instanceID: 3654}
+      Script: {instanceID: 3646}
     - Class: 114
-      Script: {instanceID: 3714}
+      Script: {instanceID: 3670}
     - Class: 114
-      Script: {instanceID: 3764}
+      Script: {instanceID: 3730}
     - Class: 114
-      Script: {instanceID: 4170}
+      Script: {instanceID: 3780}
     - Class: 114
-      Script: {instanceID: 4198}
+      Script: {instanceID: 4188}
     - Class: 114
-      Script: {instanceID: 4846}
+      Script: {instanceID: 4216}
     - Class: 114
-      Script: {instanceID: 5464}
+      Script: {instanceID: 4866}
+    - Class: 114
+      Script: {instanceID: 5490}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
+      Script: {instanceID: 0}
+    Assets/KSM/Scenes/2. Ready.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 89
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 1582}
+    - Class: 114
+      Script: {instanceID: 1588}
+    - Class: 114
+      Script: {instanceID: 2316}
+    - Class: 114
+      Script: {instanceID: 2712}
+    - Class: 114
+      Script: {instanceID: 2860}
+    - Class: 114
+      Script: {instanceID: 3100}
+    - Class: 114
+      Script: {instanceID: 3348}
+    - Class: 114
+      Script: {instanceID: 4032}
+    - Class: 114
+      Script: {instanceID: 5134}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -380,7 +440,7 @@ ScriptsOnlyBuild:
     className: PlaymodeTestsController
   - hash:
       serializedVersion: 2
-      Hash: 50d34a27aec40879b6f46fe765661b45
+      Hash: 907d487c418d960c0a2fa07bd0e99a7f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BackendServerManager
@@ -390,6 +450,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: RawImage
+  - hash:
+      serializedVersion: 2
+      Hash: efb1561c3e405079901ed1689b7bd976
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: BackendMatchManager
   - hash:
       serializedVersion: 2
       Hash: a1aa98c78061c6f03a8c124cda576e67
@@ -480,6 +546,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_SpriteAnimator
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DataParser
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -620,6 +692,12 @@ ScriptsOnlyBuild:
     className: PositionAsUV1
   - hash:
       serializedVersion: 2
+      Hash: 21a6e79e81b080e58e27e631b80e1c49
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: BackendRoomManager
+  - hash:
+      serializedVersion: 2
       Hash: 87ff43d2baf3385cba327d8f803a4ebb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -638,7 +716,7 @@ ScriptsOnlyBuild:
     className: EventTrigger
   - hash:
       serializedVersion: 2
-      Hash: 8ef30f5352d5ea9ccb4da02d6723aa34
+      Hash: c2dea7e0306aae28114ed21eb92024da
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LobbyUI
@@ -764,6 +842,12 @@ ScriptsOnlyBuild:
     className: TMP_ScrollbarEventHandler
   - hash:
       serializedVersion: 2
+      Hash: 836ace627761ff7553fccc9ad17cd8ac
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: RoomPlayer
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
@@ -802,4 +886,5 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/KSM/Scenes/0. Login.unity
   - Assets/KSM/Scenes/1. Lobby.unity
-  playerPath: C:/Users/COM/Desktop/NewGit/TeamJS_0320.aab
+  - Assets/KSM/Scenes/2. Ready.unity
+  playerPath: C:/Users/COM/Desktop/NewGit/1.apk

@@ -53,13 +53,6 @@ public class LoginUI : MonoBehaviour
 #endif
     }
 
-    public void Success(Action<bool, string> func)
-    {
-        Dispatcher.Current.BeginInvoke(() =>
-        {
-            func(true, string.Empty);
-        });
-    }
     //======================================================================
     #region 해상도 대응
     public void SetScale()

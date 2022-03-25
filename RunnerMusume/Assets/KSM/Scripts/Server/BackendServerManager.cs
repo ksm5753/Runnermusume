@@ -21,8 +21,30 @@ public class RankItem //Rank Class
     public string rank { get; set; }     // 랭크
 }
 
+public class Equipment
+{
+    public string headName;
+    public string name;
+    public string grade;
+    public int bestSpeed;
+    public int acceleration;
+    public int luck;
+    public int power;
+    public string passive = "";
+}
+
+public class Shop
+{
+    public string name;
+    public int gold;
+    public int diamond;
+}
+
 public class BackendServerManager : MonoBehaviour
 {
+    [Header("<Backend SHEET CODE >")]
+    public string equipmentCode = "";
+    public string shopCode = "";
 
     private static BackendServerManager instance;   // 인스턴스
 
@@ -35,11 +57,18 @@ public class BackendServerManager : MonoBehaviour
 
     public string appleToken = ""; // SignInWithApple.cs에서 토큰값을 받을 문자열
 
-    string userIndate;
+    public string userIndate;
+    public string user_ID;
 
 
     public string rankUuid = "";
 
+    //장비 목록
+    public List<Equipment> headEquipment = new List<Equipment>();
+    public Equipment myEquipment = new Equipment();
+
+    //상점 목록
+    public List<Shop> shopSheet = new List<Shop>();
 
     //=================================================================================================
     #region 서버 초기화
@@ -362,13 +391,15 @@ public class BackendServerManager : MonoBehaviour
             }
             myNickName = info["nickname"].ToString();
             myIndate = info["inDate"].ToString();
+            user_ID = info["gamerId"].ToString();
 
             if (loginSuccessFunc != null)
             {
-
                 InitialUserCheck();
+                //GetEquipment();
+                //RefreshInfo(loginSuccessFunc);
                 //로그인 성공했으므로 매칭 리스트 값 불러옴
-                LoginUI.GetInstance().Success(loginSuccessFunc);
+                BackendMatchManager.GetInstance().GetMatchList(loginSuccessFunc);
 
                 
             }
@@ -380,35 +411,33 @@ public class BackendServerManager : MonoBehaviour
     #region 신규 유저 체크
     public void InitialUserCheck()
     {
-        Enqueue(Backend.GameData.Get, "User", new Where(), callback =>
+        var bro = Backend.GameData.Get("User", new Where());
+
+        if (bro.IsSuccess())
         {
-            if (callback.IsSuccess())
+            JsonData userData = bro.GetReturnValuetoJSON()["rows"];
+            if (userData.Count == 0)
             {
-                JsonData userData = callback.GetReturnValuetoJSON()["rows"];
-                if (userData.Count == 0)
-                {
-                    Param param = new Param();
 
-                    param.Add("Level", 1);
-                    param.Add("NowEnergy", 20);
-                    param.Add("MaxEnergy", 20);
-                    param.Add("Gold", 0);
-                    param.Add("Diamond", 0);
+                Param param = new Param();
 
-                    Enqueue(Backend.GameData.Insert, "User", param, (callback) =>
-                    {
-                        if (callback.IsSuccess()) print("계정 생성 성공");
-                        else print("실패");
-                    });
-                }
+                param.Add("Level", 1);
+                param.Add("NowEnergy", 20);
+                param.Add("MaxEnergy", 20);
+                param.Add("Gold", 0);
+                param.Add("Diamond", 0);
+                param.Add("Head", "연습용");
 
-                userIndate = userData[0]["inDate"]["S"].ToString();
+                Backend.GameData.Insert("User", param);
+
+                return;
             }
-        });
+            userIndate = userData[0]["inDate"]["S"].ToString();
+        }
     }
     #endregion
 
-    #region 에너지 정보 새로고침
+    #region 유저 정보 새로고침
     public void RefreshInfo()
     {
         Enqueue(Backend.GameData.Get, "User", new Where(), callback =>
@@ -417,9 +446,14 @@ public class BackendServerManager : MonoBehaviour
             {
                 LobbyUI.GetInstance().energyAmount = int.Parse(callback.GetReturnValuetoJSON()["rows"][0]["NowEnergy"]["N"].ToString());
                 LobbyUI.GetInstance().energyMax = int.Parse(callback.GetReturnValuetoJSON()["rows"][0]["MaxEnergy"]["N"].ToString());
+                LobbyUI.GetInstance().GoldText(callback.GetReturnValuetoJSON()["rows"][0]["Gold"]["N"].ToString());
+                LobbyUI.GetInstance().DiamondText(callback.GetReturnValuetoJSON()["rows"][0]["Diamond"]["N"].ToString());
+
+                myEquipment.headName = callback.GetReturnValuetoJSON()["rows"][0]["Head"]["S"].ToString();
 
                 LobbyUI.GetInstance().LoadAppQuitTime();
                 LobbyUI.GetInstance().SetRechargeScheduler();
+
             }
             else
             {
@@ -429,9 +463,103 @@ public class BackendServerManager : MonoBehaviour
     }
     #endregion
 
+    #region 상점 시트 불러오기
+    public void GetShopSheet(Action<bool, string> func)
+    {
+        Enqueue(Backend.Chart.GetChartContents, shopCode, callback =>
+        {
+            if (callback.IsSuccess())
+            {
+                JsonData json = callback.FlattenRows();
+
+                shopSheet = new List<Shop>();
+                for(int i = 0; i < json.Count; i++)
+                {
+                    Shop item = new Shop();
+                    item.name = json[i]["Name"].ToString();
+                    item.gold = int.Parse(json[i]["Gold"].ToString());
+                    item.diamond = int.Parse(json[i]["Diamond"].ToString());
+
+                    shopSheet.Add(item);
+                }
+                func(true, string.Empty);
+            }
+            else
+            {
+                Debug.LogError(callback.GetErrorCode() + ", " + callback.GetMessage());
+                func(false, string.Format(BackendError,
+                    callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
+
+            }
+        });
+    }
+    #endregion
+
+    #region 장비 차트 불러오기
+    public void GetEquipment(Action<bool, string> func)
+    {
+        Enqueue(Backend.Chart.GetChartContents, equipmentCode, bro =>
+        {
+            // 이후 작업
+            if (bro.IsSuccess())
+            {
+
+                JsonData json = bro.FlattenRows();
+
+                headEquipment = new List<Equipment>();
+
+                for (int i = 0; i < json.Count; i++)
+                {
+                    Equipment item = new Equipment();
+
+                    item.name = json[i]["Name"].ToString();
+                    item.grade = json[i]["Grade"].ToString();
+                    item.bestSpeed = int.Parse(json[i]["BestSpeed"].ToString());
+                    item.acceleration = int.Parse(json[i]["Acceleration"].ToString());
+                    item.luck = int.Parse(json[i]["Lucky"].ToString());
+                    item.power = int.Parse(json[i]["Power"].ToString());
+                    item.passive = json[i]["Passive"].ToString();
+
+                    headEquipment.Add(item);
+                }
+
+                func(true, string.Empty);
+            }
+            else
+            {
+                Debug.LogError(bro.GetErrorCode() + ", " + bro.GetMessage());
+                func(false, string.Format(BackendError,
+                    bro.GetStatusCode(), bro.GetErrorCode(), bro.GetMessage()));
+
+            }
+        });
+    }
+    #endregion
+
+    #region 장비 적용
+    public void SetEquipment()
+    {
+        for(int i = 0; i < headEquipment.Count; i++)
+        {
+            if(myEquipment.headName == headEquipment[i].name)
+            {
+                myEquipment.bestSpeed += headEquipment[i].bestSpeed;
+                myEquipment.acceleration += headEquipment[i].acceleration;
+                myEquipment.luck += headEquipment[i].luck;
+                myEquipment.power += headEquipment[i].power;
+            }
+        }
+
+        print(myEquipment.bestSpeed + ", " + myEquipment.acceleration + ", " + myEquipment.luck + ", " + myEquipment.power);
+    }
+    #endregion
+
     #region 에너지 저장
     public void SaveEnergyInfo()
     {
+        if(userIndate == string.Empty)
+            InitialUserCheck();
+
         Param param = new Param();
         param.Add("NowEnergy", LobbyUI.GetInstance().energyAmount);
         param.Add("MaxEnergy", LobbyUI.GetInstance().energyMax);
@@ -441,11 +569,53 @@ public class BackendServerManager : MonoBehaviour
             if (callback.IsSuccess())
             {
                 LobbyUI.GetInstance().SaveAppQuitTime();
-                print("성공");
             }
             else
             {
-                print(callback.GetMessage());
+                Debug.LogError(callback.GetErrorCode() + ", " + callback.GetMessage());
+
+            }
+        });
+    }
+    #endregion
+
+    #region 재화 저장
+    public void SaveGold(int money, Action<bool, string> func)
+    {
+        Param param = new Param();
+        param.Add("Gold", money);
+
+        Enqueue(Backend.GameData.UpdateV2, "User", userIndate, Backend.UserInDate, param, callback =>
+        {
+            if (callback.IsSuccess())
+            {
+                LobbyUI.GetInstance().GoldText(money.ToString());
+                func(true, string.Empty);
+            }
+            else
+            {
+                func(false, string.Format(BackendError,
+                callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
+            }
+        });
+    }
+
+    public void SaveDiamond(int money, Action<bool, string> func)
+    {
+        Param param = new Param();
+        param.Add("Diamond", money);
+
+        Enqueue(Backend.GameData.UpdateV2, "User", userIndate, Backend.UserInDate, param, callback =>
+        {
+        if (callback.IsSuccess())
+        {
+            LobbyUI.GetInstance().DiamondText(money.ToString());
+                func(true, string.Empty);
+            }
+            else
+            {
+                func(false, string.Format(BackendError,
+                callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
             }
         });
     }

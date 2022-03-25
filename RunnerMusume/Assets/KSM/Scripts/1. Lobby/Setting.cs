@@ -22,7 +22,7 @@ public partial class LobbyUI : MonoBehaviour
             if (bgm_On != null)
             {
                 bgm_On.SetActive(true);
-                SoundManager.GetInstance().SetBGM(false);
+                SoundManager.GetInstance().MuteBGM(false);
             }
 
             if (bgm_Off != null)
@@ -40,7 +40,7 @@ public partial class LobbyUI : MonoBehaviour
             if (bgm_Off != null)
             {
                 bgm_Off.SetActive(true);
-                SoundManager.GetInstance().SetBGM(true);
+                SoundManager.GetInstance().MuteBGM(true);
             }
         }
     }
@@ -52,7 +52,7 @@ public partial class LobbyUI : MonoBehaviour
             if (effect_On != null)
             {
                 effect_On.SetActive(true);
-                SoundManager.GetInstance().SetEffect(false);
+                SoundManager.GetInstance().MuteEffect(false);
             }
 
             if (effect_Off != null)
@@ -68,7 +68,7 @@ public partial class LobbyUI : MonoBehaviour
             if (effect_Off != null)
             {
                 effect_Off.SetActive(true);
-                SoundManager.GetInstance().SetEffect(true);
+                SoundManager.GetInstance().MuteEffect(true);
             }
         }
     }
