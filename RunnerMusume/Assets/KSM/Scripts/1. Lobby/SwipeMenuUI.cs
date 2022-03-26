@@ -14,6 +14,7 @@ public partial class LobbyUI : MonoBehaviour
     public Toggle[] menuButtons;
     public GameObject mainParent;
     public Scrollbar scrollBar;
+    public Scrollbar scrollbar2;
     public float swipeTime = 0.01f;
     public float swipeDistance = 50.0f;
 
@@ -45,6 +46,10 @@ public partial class LobbyUI : MonoBehaviour
 
     }
 
+    public void SetScrollValue(float index)
+    {
+        scrollbar2.value = index;
+    }
     public void SetScrollValue(int index)
     {
         if (index == currentPage) return;
