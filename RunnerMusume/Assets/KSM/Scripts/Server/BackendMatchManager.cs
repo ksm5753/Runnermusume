@@ -195,6 +195,23 @@ public partial class BackendMatchManager : MonoBehaviour
 
             LobbyUI.GetInstance().RoomResult(args.ErrInfo.Equals(ErrorCode.Success) == true);
         };
+
+        // 대기방에 유저 퇴장 메시지
+        Backend.Match.OnMatchMakingRoomLeave += (args) =>
+        {
+            Debug.Log(string.Format("OnMatchMakingRoomLeave : {0} : {1}", args.ErrInfo, args.Reason));
+            if (args.ErrInfo.Equals(ErrorCode.Success) || args.ErrInfo.Equals(ErrorCode.Match_Making_KickedByOwner))
+            {
+                Debug.Log("user leave in room : " + args.UserInfo.m_nickName);
+                
+            }
+        };
+
+        // 방장이 대기방에서 나가 대기방 파기 된 메시지
+        Backend.Match.OnMatchMakingRoomDestory += (args) =>
+        {
+            Debug.Log(string.Format("OnMatchMakingRoomDestory : {0} : {1}", args.ErrInfo, args.Reason));
+        };
     }
 
     private void InGameHandler()

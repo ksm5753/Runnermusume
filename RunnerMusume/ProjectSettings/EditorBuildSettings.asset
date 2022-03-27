@@ -10,7 +10,7 @@ EditorBuildSettings:
     guid: bdd90305e26ee5449b2a6bff48346207
   - enabled: 1
     path: Assets/KSM/Scenes/1. Lobby.unity
-    guid: 264f77f78c43dc7499c3347be89d3f54
+    guid: 70f4bcf9c9f271c4e863c33493e17bdb
   - enabled: 1
     path: Assets/KSM/Scenes/2. Ready.unity
     guid: bacdf70f8765dee418b51b69cf358560

@@ -105,7 +105,7 @@ public partial class BackendMatchManager : MonoBehaviour
                 //이 경우 다시 매칭 신청해야함
                 debugLog = string.Format(EXCEPTION_OCCUR, args.Reason);
 
-                LobbyUI.GetInstance().RequestMatch();
+                //LobbyUI.GetInstance().RequestMatch();
                 break;
         }
 
@@ -201,7 +201,7 @@ public partial class BackendMatchManager : MonoBehaviour
         {
             print("매칭 서버에 연결되어 있지 않아 재접속");
             JoinMatchServer();
-            return;
+            //return;
         }
 
         //변수 초기화

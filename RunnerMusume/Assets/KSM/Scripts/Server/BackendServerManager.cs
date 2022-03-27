@@ -38,6 +38,7 @@ public class Shop
     public string name;
     public int gold;
     public int diamond;
+    public string compensate;
 }
 
 public class BackendServerManager : MonoBehaviour
@@ -479,6 +480,7 @@ public class BackendServerManager : MonoBehaviour
                     item.name = json[i]["Name"].ToString();
                     item.gold = int.Parse(json[i]["Gold"].ToString());
                     item.diamond = int.Parse(json[i]["Diamond"].ToString());
+                    item.compensate = json[i]["Compensate"].ToString();
 
                     shopSheet.Add(item);
                 }
@@ -551,6 +553,29 @@ public class BackendServerManager : MonoBehaviour
         }
 
         print(myEquipment.bestSpeed + ", " + myEquipment.acceleration + ", " + myEquipment.luck + ", " + myEquipment.power);
+    }
+    #endregion
+
+    #region 에너지 저장(상점)
+    public void SaveEnergy(int num, Action<bool, string> func)
+    {
+        Param param = new Param();
+        param.Add("NowEnergy", num);
+
+        Enqueue(Backend.GameData.UpdateV2, "User", userIndate, Backend.UserInDate, param, callback =>
+        {
+            if (callback.IsSuccess())
+            {
+                LobbyUI.GetInstance().energyAmount = num;
+                RefreshInfo();
+                func(true, string.Empty);
+            }
+            else
+            {
+                func(false, string.Format(BackendError,
+                callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
+            }
+        });
     }
     #endregion
 

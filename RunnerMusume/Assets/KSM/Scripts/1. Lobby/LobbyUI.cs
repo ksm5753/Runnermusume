@@ -8,6 +8,10 @@ using System;
 public partial class LobbyUI : MonoBehaviour
 {
     [Space(25f)]
+    [Header("< SelectMode Panel >")]
+    public GameObject selectModePanel;
+
+    [Space(25f)]
     [Header("< Energy Panel >")]
     public GameObject energyCountText;
     public Text energyTimerText;
@@ -23,10 +27,6 @@ public partial class LobbyUI : MonoBehaviour
     [Header("< Coin Panel >")]
     public Text goldText;
     public Text diamondText;
-
-    [Space(25f)]
-    [Header("< Energy Shop Panel >")]
-    public GameObject energyShopPanel;
 
     [Space(25f)]
     [Header("< Close App Object >")]
@@ -59,7 +59,11 @@ public partial class LobbyUI : MonoBehaviour
 
     void Start()
     {
+        //SetScale();
         SetSound();                                                                             //배경음 설정
+
+        BackendMatchManager.GetInstance().JoinMatchServer();
+
         BackendServerManager.GetInstance().InitialUserCheck();                                  //신규 유저 체크
 
         BackendServerManager.GetInstance().RefreshInfo();                                       //새로고침
@@ -107,12 +111,9 @@ public partial class LobbyUI : MonoBehaviour
 
     void Update()
     {
-        UpdateInput(); //화면 스와이프
-
         //게임 종료
         if (Input.GetKey(KeyCode.Escape))
             closeAppPanel.SetActive(true);
-
     }
 
     public void QuitGame() => Application.Quit();
@@ -319,9 +320,7 @@ public partial class LobbyUI : MonoBehaviour
     #region 해상도 대응
     public void SetScale()
     {
-        SetMainUI();
-        bgmToggle.isOn = PlayerPrefs.GetInt("BGM_Mute") == 0 ? true : false; //배경음 설정
-        effectToggle.isOn = PlayerPrefs.GetInt("Effect_Mute") == 0 ? true : false; //효과음 설정
+        NestedScrollManager.GetInstance().SetScale();
 
         bgm_On.SetActive(PlayerPrefs.GetInt("BGM_Mute") == 0 ? true : false);
         bgm_Off.SetActive(PlayerPrefs.GetInt("BGM_Mute") == 0 ? false : true);
@@ -329,17 +328,16 @@ public partial class LobbyUI : MonoBehaviour
         effect_On.SetActive(PlayerPrefs.GetInt("Effect_Mute") == 0 ? true : false);
         effect_Off.SetActive(PlayerPrefs.GetInt("Effect_Mute") == 0 ? false : true);
 
+        bgmToggle.isOn = PlayerPrefs.GetInt("BGM_Mute") == 0 ? true : false; //배경음 설정
+        effectToggle.isOn = PlayerPrefs.GetInt("Effect_Mute") == 0 ? true : false; //효과음 설정
+
         matchDonePanel.SetActive(false);
         matchRequestPanel.SetActive(false);
         closeAppPanel.SetActive(false);
-        energyShopPanel.SetActive(false);
         loadingObject.SetActive(false);
         errorObject.SetActive(false);
 
-        isSwipeMode = false;
-
-        SetScrollBarValue(1, false);
-        isLoading = true;
+        selectModePanel.SetActive(false);
     }
     #endregion
 

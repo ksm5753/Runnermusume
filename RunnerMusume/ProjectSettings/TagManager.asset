@@ -8,6 +8,8 @@ TagManager:
   - Background
   - Element
   - 3DObject
+  - NestedScrollManager
+  - Element2
   layers:
   - Default
   - TransparentFX

@@ -35,9 +35,13 @@ public partial class LobbyUI : MonoBehaviour
 
             if (loadingObject.activeSelf)
                 return;
-            BackendMatchManager.GetInstance().RequestMatchMaking(0);
+            //BackendMatchManager.GetInstance().RequestMatchMaking(0);
         }
     }
+    #endregion
+
+    #region 대기방 나가기
+    public void LeaveReadyRoom() => BackendMatchManager.GetInstance().LeaveMatchRoom();
     #endregion
 
     #region 매칭 취소
@@ -51,12 +55,23 @@ public partial class LobbyUI : MonoBehaviour
     #endregion
 
     #region 매칭 요청
-    public void RequestMatch()
+    public void RequestMatch(int num)
     {
         if (loadingObject.activeSelf || errorObject.activeSelf || matchDonePanel.activeSelf)
             return;
 
-        BackendMatchManager.GetInstance().RequestMatchMaking(0);
+        string title = "";
+        switch (num)
+        {
+            case 0:
+                title = "일반 대전";
+                break;
+            case 1:
+                title = "랭킹전";
+                break;
+        }
+        matchRequestPanel.GetComponentsInChildren<Text>()[0].text = title;
+        BackendMatchManager.GetInstance().RequestMatchMaking(num);
     }
     #endregion
 

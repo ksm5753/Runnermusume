@@ -19,7 +19,9 @@ public partial class LobbyUI : MonoBehaviour
                 int gold = int.Parse(goldText.text);
                 int diamond = int.Parse(diamondText.text);
 
-                
+                string compensateCode = item.compensate.Substring(0, 1);
+                string compensateAmount = item.compensate.Substring(1);
+
 
                 if (gold >= item.gold && diamond >= item.diamond)
                 {
@@ -56,9 +58,20 @@ public partial class LobbyUI : MonoBehaviour
                         {
                             Dispatcher.Current.BeginInvoke(() =>
                             {
+                                print(compensateCode);
+                                print(compensateAmount);
                                 loadingObject.SetActive(false);
                                 if (result)
                                 {
+                                    switch (compensateCode)
+                                    {
+                                        case "E":
+                                            GiveEnergy(int.Parse(compensateAmount));
+                                            break;
+                                        case "G":
+                                            GiveGold(int.Parse(compensateAmount));
+                                            break;
+                                    }
                                     errorObject.GetComponentInChildren<Text>().text = "±¸¸Å ¼º°ø!";
                                     errorObject.SetActive(true);
                                     return;
@@ -80,6 +93,20 @@ public partial class LobbyUI : MonoBehaviour
                 }
             }
         }
+    }
+    #endregion
+
+    #region ¿¡³ÊÁö È¹µæ
+    public void GiveEnergy(int num)
+    {
+        loadingObject.SetActive(true);
+        BackendServerManager.GetInstance().SaveEnergy(energyAmount + num, (bool result, string error) =>
+        {
+            Dispatcher.Current.BeginInvoke(() =>
+            {
+                loadingObject.SetActive(false);
+            });
+        });
     }
     #endregion
 

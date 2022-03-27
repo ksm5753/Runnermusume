@@ -5,88 +5,66 @@ using UnityEngine.UI;
 
 public class CustomScrollRect : ScrollRect
 {
-
-    //父CustomScrollRect对象
-    private CustomScrollRect m_Parent;
-
-    public enum Direction
-    {
-        Horizontal,
-        Vertical
-    }
-    //滑动方向
-    private Direction m_Direction = Direction.Horizontal;
-    //当前操作方向
-    private Direction m_BeginDragDirection = Direction.Horizontal;
+    bool forParent;
+    NestedScrollManager NM;
+    ScrollRect parentScrollRect;
 
     protected override void Awake()
     {
         base.Awake();
-        //找到父对象
-        Transform parent = transform.parent;
-        if (parent)
-        {
-            m_Parent = parent.GetComponentInParent<CustomScrollRect>();
-        }
-        m_Direction = this.horizontal ? Direction.Horizontal : Direction.Vertical;
+        NM = transform.parent.GetComponentInParent<NestedScrollManager>();
+        parentScrollRect = transform.parent.GetComponentInParent<ScrollRect>();
     }
 
+    private void Update()
+    {
+        if(NM == null)
+            NM = transform.parent.GetComponentInParent<NestedScrollManager>();
+
+        if (parentScrollRect == null)
+            parentScrollRect = transform.parent.GetComponentInParent<ScrollRect>();
+    }
 
     public override void OnBeginDrag(PointerEventData eventData)
     {
-        if (m_Parent)
-        {
-            m_BeginDragDirection = Mathf.Abs(eventData.delta.x) > Mathf.Abs(eventData.delta.y) ? Direction.Horizontal : Direction.Vertical;
-            if (m_BeginDragDirection != m_Direction)
-            {
-                //当前操作方向不等于滑动方向，将事件传给父对象
-                ExecuteEvents.Execute(m_Parent.gameObject, eventData, ExecuteEvents.beginDragHandler);
-                return;
-            }
-        }
+        //靛贰弊 矫累窍绰 鉴埃 荐乞捞悼捞 农搁 何葛啊 靛贰弊 矫累茄 巴, 荐流捞悼捞 农搁 磊侥捞 靛贰弊 矫累茄 巴
+        forParent = Mathf.Abs(eventData.delta.x) > Mathf.Abs(eventData.delta.y);
 
-        base.OnBeginDrag(eventData);
+        if (forParent)
+        {
+            ExecuteEvents.Execute(NM.gameObject, eventData, ExecuteEvents.beginDragHandler);
+            return;
+            //NM.OnBeginDrag(eventData);
+            //parentScrollRect.OnBeginDrag(eventData);
+        }
+        else
+            base.OnBeginDrag(eventData);
     }
+
     public override void OnDrag(PointerEventData eventData)
     {
-        if (m_Parent)
+        if (forParent)
         {
-            if (m_BeginDragDirection != m_Direction)
-            {
-                //当前操作方向不等于滑动方向，将事件传给父对象
-                ExecuteEvents.Execute(m_Parent.gameObject, eventData, ExecuteEvents.dragHandler);
-                return;
-            }
+            ExecuteEvents.Execute(NM.gameObject, eventData, ExecuteEvents.dragHandler);
+            return;
+            //NM.OnDrag(eventData);
+            //parentScrollRect.OnDrag(eventData);
         }
-        base.OnDrag(eventData);
+        else
+            base.OnDrag(eventData);
     }
 
     public override void OnEndDrag(PointerEventData eventData)
     {
-        if (m_Parent)
+        if (forParent)
         {
-            if (m_BeginDragDirection != m_Direction)
-            {
-                //当前操作方向不等于滑动方向，将事件传给父对象
-                ExecuteEvents.Execute(m_Parent.gameObject, eventData, ExecuteEvents.endDragHandler);
-                return;
-            }
+            ExecuteEvents.Execute(NM.gameObject, eventData, ExecuteEvents.endDragHandler);
+            return;
+            //NM.OnEndDrag(eventData);
+            //parentScrollRect.OnEndDrag(eventData);
         }
-        base.OnEndDrag(eventData);
-    }
-
-    public override void OnScroll(PointerEventData data)
-    {
-        if (m_Parent)
-        {
-            if (m_BeginDragDirection != m_Direction)
-            {
-                //当前操作方向不等于滑动方向，将事件传给父对象
-                ExecuteEvents.Execute(m_Parent.gameObject, data, ExecuteEvents.scrollHandler);
-                return;
-            }
-        }
-        base.OnScroll(data);
+        else
+            base.OnEndDrag(eventData);
     }
 }
 

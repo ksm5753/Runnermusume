@@ -11,11 +11,11 @@ ScriptsOnlyBuild:
     - InAppPurchaser
     - LobbyUI
     - LoginUI
+    - NestedScrollManager
     - RoomPlayer
     - ScaleCtrl
     - SendQueueMgr
     - SoundManager
-    - ToggleExtension
     TheBackendSettings.dll:
     - TheBackendSettings
     Unity.Rider.Editor.dll:
@@ -35,8 +35,6 @@ ScriptsOnlyBuild:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
     - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
-    UnityEngine.Purchasing.Codeless.dll:
-    - UnityEngine.Purchasing.IAPButton
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
@@ -48,14 +46,15 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.HorizontalLayoutGroup
     - UnityEngine.UI.Image
     - UnityEngine.UI.InputField
+    - UnityEngine.UI.LayoutElement
     - UnityEngine.UI.Mask
     - UnityEngine.UI.Outline
+    - UnityEngine.UI.ScrollRect
     - UnityEngine.UI.Scrollbar
     - UnityEngine.UI.Shadow
     - UnityEngine.UI.Slider
     - UnityEngine.UI.Text
     - UnityEngine.UI.Toggle
-    - UnityEngine.UI.ToggleGroup
     - UnityEngine.UI.VerticalLayoutGroup
   sceneClasses:
     Assets/KSM/Scenes/0. Login.unity:
@@ -92,55 +91,55 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 18002}
+      Script: {instanceID: 18032}
     - Class: 114
-      Script: {instanceID: 18220}
+      Script: {instanceID: 18250}
     - Class: 114
-      Script: {instanceID: 18276}
+      Script: {instanceID: 18306}
     - Class: 114
-      Script: {instanceID: 18638}
+      Script: {instanceID: 18668}
     - Class: 114
-      Script: {instanceID: 18652}
+      Script: {instanceID: 18682}
     - Class: 114
-      Script: {instanceID: 18738}
+      Script: {instanceID: 18768}
     - Class: 114
-      Script: {instanceID: 18972}
+      Script: {instanceID: 19002}
     - Class: 114
-      Script: {instanceID: 19030}
+      Script: {instanceID: 19060}
     - Class: 114
-      Script: {instanceID: 19174}
+      Script: {instanceID: 19204}
     - Class: 114
-      Script: {instanceID: 19398}
+      Script: {instanceID: 19428}
     - Class: 114
-      Script: {instanceID: 19462}
+      Script: {instanceID: 19492}
     - Class: 114
-      Script: {instanceID: 19638}
+      Script: {instanceID: 19668}
     - Class: 114
-      Script: {instanceID: 19752}
+      Script: {instanceID: 19782}
     - Class: 114
-      Script: {instanceID: 19810}
+      Script: {instanceID: 19840}
     - Class: 114
-      Script: {instanceID: 19890}
+      Script: {instanceID: 19920}
     - Class: 114
-      Script: {instanceID: 19928}
+      Script: {instanceID: 19958}
     - Class: 114
-      Script: {instanceID: 19950}
+      Script: {instanceID: 19980}
     - Class: 114
-      Script: {instanceID: 20070}
+      Script: {instanceID: 20100}
     - Class: 114
-      Script: {instanceID: 20088}
+      Script: {instanceID: 20118}
     - Class: 114
-      Script: {instanceID: 20922}
+      Script: {instanceID: 20952}
     - Class: 114
-      Script: {instanceID: 21220}
+      Script: {instanceID: 21250}
     - Class: 114
-      Script: {instanceID: 21240}
+      Script: {instanceID: 21270}
     - Class: 114
-      Script: {instanceID: 21256}
+      Script: {instanceID: 21286}
     - Class: 114
-      Script: {instanceID: 21372}
+      Script: {instanceID: 21402}
     - Class: 114
-      Script: {instanceID: 21560}
+      Script: {instanceID: 21590}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -166,7 +165,13 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 21
       Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
     - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 43
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
@@ -174,60 +179,68 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 89
+      Script: {instanceID: 0}
     - Class: 91
       Script: {instanceID: 0}
     - Class: 95
       Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 18002}
+      Script: {instanceID: 18032}
     - Class: 114
-      Script: {instanceID: 18116}
+      Script: {instanceID: 18146}
     - Class: 114
-      Script: {instanceID: 18186}
+      Script: {instanceID: 18162}
     - Class: 114
-      Script: {instanceID: 18198}
+      Script: {instanceID: 18216}
     - Class: 114
-      Script: {instanceID: 18220}
+      Script: {instanceID: 18228}
     - Class: 114
-      Script: {instanceID: 18652}
+      Script: {instanceID: 18250}
     - Class: 114
-      Script: {instanceID: 19030}
+      Script: {instanceID: 18682}
     - Class: 114
-      Script: {instanceID: 19174}
+      Script: {instanceID: 19060}
     - Class: 114
-      Script: {instanceID: 19398}
+      Script: {instanceID: 19204}
     - Class: 114
-      Script: {instanceID: 19460}
+      Script: {instanceID: 19428}
     - Class: 114
-      Script: {instanceID: 19638}
+      Script: {instanceID: 19490}
     - Class: 114
-      Script: {instanceID: 19648}
+      Script: {instanceID: 19668}
     - Class: 114
-      Script: {instanceID: 19736}
+      Script: {instanceID: 19678}
     - Class: 114
-      Script: {instanceID: 19752}
+      Script: {instanceID: 19782}
     - Class: 114
-      Script: {instanceID: 19810}
+      Script: {instanceID: 19840}
     - Class: 114
-      Script: {instanceID: 19928}
+      Script: {instanceID: 19958}
     - Class: 114
-      Script: {instanceID: 19950}
+      Script: {instanceID: 19980}
     - Class: 114
-      Script: {instanceID: 20008}
+      Script: {instanceID: 20038}
     - Class: 114
-      Script: {instanceID: 20058}
+      Script: {instanceID: 20118}
     - Class: 114
-      Script: {instanceID: 20446}
+      Script: {instanceID: 20476}
     - Class: 114
-      Script: {instanceID: 20472}
+      Script: {instanceID: 20502}
     - Class: 114
-      Script: {instanceID: 20654}
+      Script: {instanceID: 20684}
     - Class: 114
-      Script: {instanceID: 21102}
+      Script: {instanceID: 20842}
     - Class: 114
-      Script: {instanceID: 21706}
+      Script: {instanceID: 21736}
+    - Class: 114
+      Script: {instanceID: 304816}
+    - Class: 114
+      Script: {instanceID: 869078}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -235,6 +248,10 @@ ScriptsOnlyBuild:
     - Class: 157
       Script: {instanceID: 0}
     - Class: 196
+      Script: {instanceID: 0}
+    - Class: 198
+      Script: {instanceID: 0}
+    - Class: 199
       Script: {instanceID: 0}
     - Class: 213
       Script: {instanceID: 0}
@@ -266,23 +283,23 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 18002}
+      Script: {instanceID: 18032}
     - Class: 114
-      Script: {instanceID: 18652}
+      Script: {instanceID: 18682}
     - Class: 114
-      Script: {instanceID: 19030}
+      Script: {instanceID: 19060}
     - Class: 114
-      Script: {instanceID: 19174}
+      Script: {instanceID: 19204}
     - Class: 114
-      Script: {instanceID: 19398}
+      Script: {instanceID: 19428}
     - Class: 114
-      Script: {instanceID: 19638}
+      Script: {instanceID: 19668}
     - Class: 114
-      Script: {instanceID: 20088}
+      Script: {instanceID: 20118}
     - Class: 114
-      Script: {instanceID: 20300}
+      Script: {instanceID: 20330}
     - Class: 114
-      Script: {instanceID: 21358}
+      Script: {instanceID: 21388}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -704,7 +721,7 @@ ScriptsOnlyBuild:
     className: EventTrigger
   - hash:
       serializedVersion: 2
-      Hash: 21b89c1e592617e4710563d2a80b74e1
+      Hash: 1daf53490a08d15c4c577f694b94efdf
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LobbyUI
@@ -800,12 +817,6 @@ ScriptsOnlyBuild:
     className: IAPListener
   - hash:
       serializedVersion: 2
-      Hash: 32194ea885ab92c4f0928ae379d97cbc
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: ToggleExtension
-  - hash:
-      serializedVersion: 2
       Hash: 6980e81ddc615a861309d2d659cc3760
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -882,9 +893,21 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: TouchInputModule
+  - hash:
+      serializedVersion: 2
+      Hash: 79c504e02a74d1b55d5bc5da53bbec14
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NestedScrollManager
+  - hash:
+      serializedVersion: 2
+      Hash: 040dd48e3a027d5424519a5fa2009df4
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: CCCC
   platform: 13
   scenePathNames:
   - Assets/KSM/Scenes/0. Login.unity
   - Assets/KSM/Scenes/1. Lobby.unity
   - Assets/KSM/Scenes/2. Ready.unity
-  playerPath: C:/Users/COM/Desktop/NewGit/TeamJS_0326.aab
+  playerPath: C:/Users/COM/Desktop/NewGit/TeamJS_0327.aab
