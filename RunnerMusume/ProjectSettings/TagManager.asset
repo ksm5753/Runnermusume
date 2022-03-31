@@ -10,6 +10,8 @@ TagManager:
   - 3DObject
   - NestedScrollManager
   - Element2
+  - PlayerCamera
+  - Fall
   layers:
   - Default
   - TransparentFX

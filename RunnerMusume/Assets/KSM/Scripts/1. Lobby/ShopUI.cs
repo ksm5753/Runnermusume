@@ -105,6 +105,12 @@ public partial class LobbyUI : MonoBehaviour
             Dispatcher.Current.BeginInvoke(() =>
             {
                 loadingObject.SetActive(false);
+
+                if (!result)
+                {
+                    errorObject.GetComponentInChildren<Text>().text = error;
+                    errorObject.SetActive(true);
+                }
             });
         });
     }
@@ -119,6 +125,12 @@ public partial class LobbyUI : MonoBehaviour
             Dispatcher.Current.BeginInvoke(() =>
             {
                 loadingObject.SetActive(false);
+
+                if (!result)
+                {
+                    errorObject.GetComponentInChildren<Text>().text = error;
+                    errorObject.SetActive(true);
+                }
             });
         });
     }
@@ -133,6 +145,12 @@ public partial class LobbyUI : MonoBehaviour
             Dispatcher.Current.BeginInvoke(() =>
             {
                 loadingObject.SetActive(false);
+
+                if (!result)
+                {
+                    errorObject.GetComponentInChildren<Text>().text = error;
+                    errorObject.SetActive(true);
+                }
             });
         });
     }

@@ -11,11 +11,19 @@ public class GameManager : MonoBehaviour
     #region Scene
     private const string LOGIN = "0. Login";
     private const string LOBBY = "1. Lobby";
-    private const string READY = "2. READY";
+    private const string READY = "2. Ready";
+    private const string INGAME = "3. InGame";
     #endregion
 
-    public enum GameState { Login, Lobby, Ready};
+    #region Actions-Events
+    public static event Action InGame = delegate { };
+    public static event Action AfterInGame = delegate { };
+    #endregion
+
+    public enum GameState { Login, Lobby, Ready, InGame, Start};
     private GameState gameState;
+
+    private IEnumerator InGameUpdateCoroutine;
 
     public static GameManager GetInstance()
     {
@@ -27,8 +35,36 @@ public class GameManager : MonoBehaviour
     {
         if (!instance) instance = this;
 
+        // 60프레임 고정
+        Application.targetFrameRate = 60;
+        // 게임중 슬립모드 해제
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
         DontDestroyOnLoad(this.gameObject);
+
+        InGameUpdateCoroutine = InGameUpdate();
+    }
+    void Update()
+    {
+        if(gameState == GameState.Start)
+        {
+            //InGame();
+        }
+    }
+
+    IEnumerator InGameUpdate()
+    {
+        while (true)
+        {
+            if(gameState != GameState.Start)
+            {
+                StopCoroutine(InGameUpdateCoroutine);
+                yield return null;
+            }
+            InGame();
+            //AfterInGame();
+            yield return new WaitForSeconds(.1f);
+        }
     }
 
     //=======================================================================
@@ -45,6 +81,13 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Ready:
                 ChangeScene(READY);
+                break;
+            case GameState.InGame:
+                ChangeScene(INGAME);
+                break;
+            case GameState.Start:
+                print("시작!");
+                StartCoroutine(InGameUpdateCoroutine);
                 break;
         }
     }

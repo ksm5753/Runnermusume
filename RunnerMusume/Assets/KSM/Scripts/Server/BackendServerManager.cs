@@ -21,6 +21,15 @@ public class RankItem //Rank Class
     public string rank { get; set; }     // 랭크
 }
 
+public class PlayerLevel
+{
+    public int level;
+    public int energyMax;
+    public int exp;
+    public int gold;
+    public int diamond;
+}
+
 public class Equipment
 {
     public string headName;
@@ -46,6 +55,7 @@ public class BackendServerManager : MonoBehaviour
     [Header("<Backend SHEET CODE >")]
     public string equipmentCode = "";
     public string shopCode = "";
+    public string levelCode = "";
 
     private static BackendServerManager instance;   // 인스턴스
 
@@ -70,6 +80,9 @@ public class BackendServerManager : MonoBehaviour
 
     //상점 목록
     public List<Shop> shopSheet = new List<Shop>();
+
+    //레벨 목록
+    public List<PlayerLevel> levelSheet = new List<PlayerLevel>();
 
     //=================================================================================================
     #region 서버 초기화
@@ -423,6 +436,7 @@ public class BackendServerManager : MonoBehaviour
                 Param param = new Param();
 
                 param.Add("Level", 1);
+                param.Add("Exp", 0);
                 param.Add("NowEnergy", 20);
                 param.Add("MaxEnergy", 20);
                 param.Add("Gold", 0);
@@ -450,6 +464,19 @@ public class BackendServerManager : MonoBehaviour
                 LobbyUI.GetInstance().GoldText(callback.GetReturnValuetoJSON()["rows"][0]["Gold"]["N"].ToString());
                 LobbyUI.GetInstance().DiamondText(callback.GetReturnValuetoJSON()["rows"][0]["Diamond"]["N"].ToString());
 
+                LobbyUI.GetInstance().level = int.Parse(callback.GetReturnValuetoJSON()["rows"][0]["Level"]["N"].ToString());
+                LobbyUI.GetInstance().expAmount = int.Parse(callback.GetReturnValuetoJSON()["rows"][0]["Exp"]["N"].ToString());
+
+                print(LobbyUI.GetInstance().expAmount);
+
+                foreach(var level in levelSheet)
+                {
+                    if (level.level == LobbyUI.GetInstance().level)
+                    {
+                        LobbyUI.GetInstance().expMax = level.exp;
+                    }
+                }
+
                 myEquipment.headName = callback.GetReturnValuetoJSON()["rows"][0]["Head"]["S"].ToString();
 
                 LobbyUI.GetInstance().LoadAppQuitTime();
@@ -459,6 +486,41 @@ public class BackendServerManager : MonoBehaviour
             else
             {
                 print(callback.GetMessage());
+            }
+        });
+    }
+    #endregion
+
+    #region 레벨 시트 불러오기
+    public void GetLevelSheet(Action<bool, string> func)
+    {
+        Enqueue(Backend.Chart.GetChartContents, levelCode, callback =>
+        {
+            if (callback.IsSuccess())
+            {
+                JsonData json = callback.FlattenRows();
+
+                levelSheet = new List<PlayerLevel>();
+                for (int i = 0; i < json.Count; i++)
+                {
+                    PlayerLevel ls = new PlayerLevel();
+                    ls.level = int.Parse(json[i]["Level"].ToString());
+                    ls.energyMax = int.Parse(json[i]["Emax"].ToString());
+                    ls.exp = int.Parse(json[i]["Exp"].ToString());
+                    ls.gold = int.Parse(json[i]["Gold"].ToString());
+                    ls.diamond = int.Parse(json[i]["Diamond"].ToString());
+
+
+                    levelSheet.Add(ls);
+                }
+                func(true, string.Empty);
+            }
+            else
+            {
+                Debug.LogError(callback.GetErrorCode() + ", " + callback.GetMessage());
+                func(false, string.Format(BackendError,
+                    callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
+
             }
         });
     }

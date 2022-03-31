@@ -111,7 +111,7 @@ public partial class BackendMatchManager : MonoBehaviour
     #region 샌드박스 모드 설정
     private void SetAIPlayer()
     {
-        int aiCount = 3 - sessionIdList.Count;
+        int aiCount = 2 - sessionIdList.Count;
         print(sessionIdList.Count);
         print("SetAIPlayer - AI Player 설정 : " + aiCount);
 

@@ -7,6 +7,7 @@ using BackEnd;
 using BackEnd.Tcp;
 using LitJson;
 using System.Linq;
+using Protocol;
 
 public partial class BackendMatchManager : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public partial class BackendMatchManager : MonoBehaviour
 
     public SessionId hostSession; //호스트 세션
     private bool isHost = false; //호스트 여부 (서버에서 설정한 Supergamer 정보를 가져옴
+    private Queue<KeyMessage> localQueue = null;
 
     public static BackendMatchManager GetInstance()
     {
@@ -56,7 +58,19 @@ public partial class BackendMatchManager : MonoBehaviour
     void Update()
     {
         if (isConnectMatchServer || isConnectInGameServer)
+        {
             Backend.Match.Poll();
+
+            if(localQueue != null)
+            {
+                while(localQueue.Count > 0)
+                {
+                    var msg = localQueue.Dequeue();
+                    InGameManager.GetInstance().OnRecieveForLocal(msg);
+                }
+            }
+        }
+
     }
 
     void OnApplicationQuit()
@@ -145,10 +159,10 @@ public partial class BackendMatchManager : MonoBehaviour
         print("SetHostSession - 호스트 여부 : " + isHost);
 
         //호스트 세션이면 로컬에서 처리하는 패킷이 있으므로 로컬 큐를 생성해준다
-        //if (isHost)
-        //    localQueue = new Queue<>();
-        //else
-        //    localQueue = null;
+        if (isHost)
+            localQueue = new Queue<KeyMessage>();
+        else
+            localQueue = null;
 
         //호스트 설정까지 끝나면 매치서버와 접속 끊음
         LeaveMatchServer();
@@ -164,6 +178,14 @@ public partial class BackendMatchManager : MonoBehaviour
     public bool IsSessionListNull()
     {
         return sessionIdList == null || sessionIdList.Count == 0;
+    }
+
+    public void AddMsgToLocalQueue(KeyMessage message)
+    {
+        //로컬 큐에 메시지 추가
+        if (!isHost || localQueue == null) return;
+
+        localQueue.Enqueue(message);
     }
 
     private void MatchMakingHandler()
@@ -268,9 +290,14 @@ public partial class BackendMatchManager : MonoBehaviour
                 return;
             }
 
-            if (BackendRoomManager.GetInstance() == null) return;
+            //룸 사전정보 설정
+            if (BackendRoomManager.GetInstance() != null)
+                BackendRoomManager.GetInstance().OnRecieve(args);
 
-            BackendRoomManager.GetInstance().OnRecieve(args);
+            //게임 사전정보 설정
+            if (InGameManager.GetInstance() != null)
+                InGameManager.GetInstance().OnRecieve(args);
+            
         };
     }
 }

@@ -35,12 +35,10 @@ public class NestedScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandle
     public void OnBeginDrag(PointerEventData eventData)
     {
         curPos = SetPos();
-        //text.text = "ÀÛµ¿ : " + curPos;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        //text.text = (Mathf.Abs(eventData.delta.x) > Mathf.Abs(eventData.delta.y)).ToString();
         isDrag = true;
     }
 
@@ -99,7 +97,6 @@ public class NestedScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     void Update()
     {
-        //text.text = curPos.ToString() + ", " +  isDrag.ToString();
         tabSlider.value = scrollbar.value;
 
         if (!isDrag)

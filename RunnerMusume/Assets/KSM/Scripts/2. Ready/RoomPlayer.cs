@@ -24,7 +24,7 @@ public class RoomPlayer : MonoBehaviour
     public Text nickNameText;
     public Text test;
 
-    public void Initialize(bool isMe, SessionId index, string nickName/*,string headName, string grade, int bestSpeed, int acceleration, int luck, int power, string passive*/)
+    public void Initialize(bool isMe, SessionId index, string nickName)
     {
         this.isMe = isMe;
         this.index = index;

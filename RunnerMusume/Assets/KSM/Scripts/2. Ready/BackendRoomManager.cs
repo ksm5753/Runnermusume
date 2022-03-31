@@ -123,27 +123,48 @@ public class BackendRoomManager : MonoBehaviour
             index += 1;
         }
 
-        Invoke("Test", 1);
+        Invoke("EquipmentData", 0.1f);
     }
 
-    void Test() //이게 나중에 로딩 해줌
+    void EquipmentData() //이게 나중에 로딩 해줌
     {
         PlayerEquipmentMessage message = new PlayerEquipmentMessage(players[myPlayerIndex].index, players[myPlayerIndex].headName, players[myPlayerIndex].grade, players[myPlayerIndex].bestSpeed, players[myPlayerIndex].acceleration, players[myPlayerIndex].luck, players[myPlayerIndex].power, players[myPlayerIndex].passive);
-        BackendMatchManager.GetInstance().SendDataToInGame<PlayerEquipmentMessage>(message);
+        BackendMatchManager.GetInstance().SendDataToInGame(message);
 
         foreach(var sessionId in BackendMatchManager.GetInstance().sessionIdList)
         {
-            
-                print(sessionId) ;
-                if (sessionId < (SessionId)10)
-                {
-                    print("A");
-                    players[sessionId].SetEquipment(sessionId, "1", "1", 1, 2, 3, 4, "");
-                    PlayerEquipmentMessage msg = new PlayerEquipmentMessage(players[sessionId].index, players[sessionId].headName, players[sessionId].grade, 1, 2, 3, 4, players[sessionId].passive);
-                    BackendMatchManager.GetInstance().SendDataToInGame<PlayerEquipmentMessage>(msg);
-                }
-            
+            if (sessionId < (SessionId)10)
+            {
+                int bestSpeed = Random.Range(0, 4);
+                int acceleration = Random.Range(0, 4);
+                int luck = Random.Range(0, 4);
+                int power = Random.Range(0, 4);
+                players[sessionId].SetEquipment(sessionId, "1", "1", bestSpeed, acceleration, luck, power, "");
+                PlayerEquipmentMessage msg = new PlayerEquipmentMessage(players[sessionId].index, players[sessionId].headName, players[sessionId].grade, bestSpeed, acceleration, luck, power, players[sessionId].passive);
+                BackendMatchManager.GetInstance().SendDataToInGame(msg);
+            }
         }
+
+        if (BackendMatchManager.GetInstance().IsHost())
+        {
+            StartCoroutine("LoadGameScene");
+        }
+    }
+
+    private IEnumerator LoadGameScene()
+    {
+        RoomCountMessage msg = new RoomCountMessage(5);
+
+        //카운트 다운
+        for(int i = 0; i < 5; i++)
+        {
+            msg.time = 5 - i;
+            BackendMatchManager.GetInstance().SendDataToInGame(msg);
+            yield return new WaitForSeconds(1f);
+        }
+
+        LoadGameSceneMessage loadmsg = new LoadGameSceneMessage();
+        BackendMatchManager.GetInstance().SendDataToInGame(loadmsg);
     }
 
     public void OnRecieve(MatchRelayEventArgs args)
@@ -159,7 +180,8 @@ public class BackendRoomManager : MonoBehaviour
         if (msg == null)
             return;
 
-        if (BackendMatchManager.GetInstance().IsHost() != true && args.From.SessionId == myPlayerIndex) return;
+        if (BackendMatchManager.GetInstance().IsHost() != true && args.From.SessionId == myPlayerIndex)
+            return;
 
         if (players == null)
             return;
@@ -170,6 +192,14 @@ public class BackendRoomManager : MonoBehaviour
                 PlayerEquipmentMessage playerEquipmentMessage = DataParser.ReadJsonData<PlayerEquipmentMessage>(args.BinaryUserData);
                 ProcessPlayerData(playerEquipmentMessage);
                 break;
+            case Type.RoamCount:
+                RoomCountMessage roomCountMessage = DataParser.ReadJsonData<RoomCountMessage>(args.BinaryUserData);
+                ReadyRoomUI.GetInstance().SetCount(roomCountMessage.time.ToString() + "초후 시작됩니다.");
+                break;
+            case Type.LoadGameScene:
+                GameManager.GetInstance().ChangeState(GameManager.GameState.InGame);
+                break;
+
         }
     }
 

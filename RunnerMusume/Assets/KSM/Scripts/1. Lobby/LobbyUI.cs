@@ -24,6 +24,15 @@ public partial class LobbyUI : MonoBehaviour
     private float rechargeRemainTime = 0;
 
     [Space(25f)]
+    [Header("< Profile Panel >")]
+    public GameObject profilePanel;
+    public Text levelText;
+    public Image expBar;
+    public int expAmount;
+    public int expMax;
+    public int level;
+
+    [Space(25f)]
     [Header("< Coin Panel >")]
     public Text goldText;
     public Text diamondText;
@@ -59,14 +68,12 @@ public partial class LobbyUI : MonoBehaviour
 
     void Start()
     {
-        //SetScale();
         SetSound();                                                                             //배경음 설정
 
-        BackendMatchManager.GetInstance().JoinMatchServer();
+        BackendMatchManager.GetInstance().JoinMatchServer();                                    //서버 매치 참여
 
         BackendServerManager.GetInstance().InitialUserCheck();                                  //신규 유저 체크
 
-        BackendServerManager.GetInstance().RefreshInfo();                                       //새로고침
 
         #region 장비 정보 불러오기
         loadingObject.SetActive(true);
@@ -104,6 +111,27 @@ public partial class LobbyUI : MonoBehaviour
         });
         #endregion
 
+        #region 레벨 정보 불러오기
+        loadingObject.SetActive(true);
+        BackendServerManager.GetInstance().GetLevelSheet((bool result, string error) =>          //장비 정보 불러오기
+        {
+            Dispatcher.Current.BeginInvoke(() =>
+            {
+                loadingObject.SetActive(false);
+                if (result)
+                {
+                    print("레벨 정보 불러오기 성공");
+                    return;
+                }
+                errorObject.GetComponentInChildren<Text>().text = error;
+                errorObject.SetActive(true);
+            });
+        });
+        #endregion
+
+        BackendServerManager.GetInstance().RefreshInfo();                                       //새로고침
+
+
 
         gamerIDText.GetComponentInChildren<Text>().text = "User ID : " + BackendServerManager.GetInstance().user_ID;
 
@@ -111,6 +139,19 @@ public partial class LobbyUI : MonoBehaviour
 
     void Update()
     {
+        //에너지 실시간 변화
+        SetEnergyText(energyAmount + " / " + energyMax, (energyAmount >= energyMax) ? "" : ((int)rechargeRemainTime / 60) + " : " + string.Format("{0:D2}", (int)rechargeRemainTime % 60));
+
+        //레벨 텍스트 변화
+        SetLevelText(level);
+
+        //경험치 바 변화
+        if (expMax != 0)
+            SetExpBar(expAmount, expMax);
+
+        //레벨업 보상
+        //if (expAmount >= expMax) print("레벨업!");
+
         //게임 종료
         if (Input.GetKey(KeyCode.Escape))
             closeAppPanel.SetActive(true);
@@ -357,6 +398,14 @@ public partial class LobbyUI : MonoBehaviour
         energyBar.maxValue = energyMax;
         energyBar.value = energyAmount;
     }
+    #endregion
+
+    #region 레벨 텍스트 수정
+    public void SetLevelText(int level) => levelText.text = level.ToString();
+    #endregion
+
+    #region 경험치 바 수정
+    public void SetExpBar(int expAmount, int expMax) => expBar.fillAmount = ((float)expAmount / (float)expMax);
     #endregion
 
     #region 유저아이디 복사

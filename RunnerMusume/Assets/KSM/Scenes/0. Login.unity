@@ -1491,6 +1491,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equipmentCode: 44590
   shopCode: 44736
+  levelCode: 44756
   appleToken: 
   userIndate: 
   user_ID: 
