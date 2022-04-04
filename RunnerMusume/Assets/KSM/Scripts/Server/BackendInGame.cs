@@ -111,7 +111,7 @@ public partial class BackendMatchManager : MonoBehaviour
     #region »÷µå¹Ú½º ¸ðµå ¼³Á¤
     private void SetAIPlayer()
     {
-        int aiCount = 2 - sessionIdList.Count;
+        int aiCount = 4 - sessionIdList.Count;
         print(sessionIdList.Count);
         print("SetAIPlayer - AI Player ¼³Á¤ : " + aiCount);
 
@@ -186,8 +186,6 @@ public partial class BackendMatchManager : MonoBehaviour
                     print("·ë ÀÌÁö·Õ");
                 }
                 return true;
-            //case Type.LoadGameScene:
-            //    return true;
         }
         return false;
     }

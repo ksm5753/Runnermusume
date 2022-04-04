@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     public enum GameState { Login, Lobby, Ready, InGame, Start};
-    private GameState gameState;
+    public GameState gameState;
 
     private IEnumerator InGameUpdateCoroutine;
 
@@ -86,7 +86,6 @@ public class GameManager : MonoBehaviour
                 ChangeScene(INGAME);
                 break;
             case GameState.Start:
-                print("Ω√¿€!");
                 StartCoroutine(InGameUpdateCoroutine);
                 break;
         }

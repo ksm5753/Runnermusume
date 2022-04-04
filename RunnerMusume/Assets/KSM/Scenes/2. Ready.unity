@@ -394,7 +394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPool: {fileID: 1739219481}
-  playerPrefab: {fileID: 5390180951125665285, guid: 5fba912168cf2af4b8747bdaba0bf78a, type: 3}
+  playerPrefab: {fileID: 8048937207431171445, guid: 5fba912168cf2af4b8747bdaba0bf78a, type: 3}
 --- !u!4 &513949391
 Transform:
   m_ObjectHideFlags: 0
@@ -744,11 +744,11 @@ RectTransform:
   m_Father: {fileID: 1636753042}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1080, y: 1500}
-  m_Pivot: {x: 0.5, y: 0}
+  m_SizeDelta: {x: 1080, y: 1920}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1739219483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,14 +800,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
+    m_Left: 30
+    m_Right: 30
+    m_Top: 100
+    m_Bottom: 100
+  m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 540, y: 375}
-  m_Spacing: {x: 0, y: 0}
+  m_CellSize: {x: 473, y: 793}
+  m_Spacing: {x: 50, y: 150}
   m_Constraint: 0
   m_ConstraintCount: 2

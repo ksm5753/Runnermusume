@@ -11,9 +11,12 @@ public class InputManager : MonoBehaviour
 
     void Start()
     {
-        GameManager.InGame += MobileInput; //회전값
+        //GameManager.InGame += MobileInput; //회전값
     }
-
+    private void Update()
+    {
+        MobileInput();
+    }
     void MobileInput()
     {
         if (!virtualStick) return;
@@ -25,11 +28,9 @@ public class InputManager : MonoBehaviour
             isRotate = true;
 
         keyCode |= /*KeyEventCode.ROTATE;*/(isRotate ? KeyEventCode.ROTATE : KeyEventCode.NO_ROTATE);
-        print("키값 : " + keyCode);
 
         if(keyCode <= 0)
         {
-            print("동작 없음");
             return;
         }
 
