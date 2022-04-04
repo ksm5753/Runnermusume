@@ -20,7 +20,7 @@ public class Movement_Joystick : MonoBehaviour
     {
         isInputEnable = false;
         joystickOriginalPos = joystickBg.transform.position;
-        joystickRadius = joystickBg.GetComponent<RectTransform>().sizeDelta.y / 2;
+        joystickRadius = joystickBg.GetComponent<RectTransform>().sizeDelta.y / 4;
     }
 
     public virtual void PointerDown()

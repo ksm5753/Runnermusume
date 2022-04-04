@@ -16,14 +16,11 @@ public class GamePlayer : MonoBehaviour
     //UI
     public TextMesh nicknameText;
 
-    public GameObject distanceLine;
-    public GameObject myIcon;
-
     //이동 관련
     public bool isMove;
     public bool isRotate;
 
-    public bool isWall;
+    public double moveVector;
 
     void Awake()
     {
@@ -48,11 +45,12 @@ public class GamePlayer : MonoBehaviour
             //Camera.main.GetComponent<FollowCamera>().target = this.transform;
         }
 
-        this.isMove = true;
+        this.isMove = false;
         this.isRotate = false;
+        this.moveVector = 0;
     }
 
-    float rx = 0, fx = 0;
+    float fx = 0;
 
     public void SetRotateVector(float x)
     {
@@ -65,28 +63,26 @@ public class GamePlayer : MonoBehaviour
             isRotate = true;
         }
 
-        fx = x * 70;
+        fx += x * 10;
     }
 
     public void Move()
     {
-
-        if (isWall) return;
         var pos = transform.position + transform.forward * 10 * Time.deltaTime;
 
         SetPosition(pos);
-        SetRotation(transform.localEulerAngles);
     }
 
     public void Rotate()
     {
-        //if (fx.Equals(0))
-        //{
-        //    isRotate = false;
-        //    return;
-        //}
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, rx + fx, 0), Time.deltaTime * 3);
-        //transform.localEulerAngles = Quaternion.Slerp(transform.rotation, Quaternion.EulerAngles(0, 0, 0) new Vector3(0, rx + fx, 0), Time.deltaTime * 10);
+        if (fx.Equals(0))
+        {
+            isRotate = false;
+            return;
+        }
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, fx, 0), Time.deltaTime * 10);
+
 
     }
 
@@ -117,62 +113,23 @@ public class GamePlayer : MonoBehaviour
         anim.SetBool("isMove", isMove);
     }
 
-    IEnumerator IsRespawn()
-    {
-        SetPosition(new Vector3(Random.Range(-2f, 2f), 3, -11));
-        transform.localEulerAngles = new Vector3(0, 0, 0);
-
-        isMove = false;
-        for(int i = 0; i < 5; i++)
-        {
-            transform.GetChild(2).gameObject.SetActive(false);
-            yield return new WaitForSeconds(.2f);
-            transform.GetChild(2).gameObject.SetActive(true);
-            yield return new WaitForSeconds(.2f);
-        }
-        isMove = true;
-
-        yield return null;
-    }
-
-    void StopToWall()
-    {
-        isWall = Physics.Raycast(transform.position, transform.forward, 3, LayerMask.GetMask("Wall"));
-    }
-
-
+    
 
     void Update()
     {
-        //지도표시
-        InGameManager.GetInstance().playersIcon[index].SetValue(this.gameObject, InGameManager.GetInstance().finalObject);
 
-        if (GameManager.GetInstance().gameState != GameManager.GameState.Start) return;
-
-        //플레이어가 리스폰 애니매이션 발동중이 아닐때
         SetMoveAnimation(isMove);
-
-
-        //플레이어 이동 / 회전 관련
         if (isMove) Move();
 
         if (isRotate) Rotate();
-        else
-        {
-            rx = transform.localEulerAngles.y + fx;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        StopToWall();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Fall"))
         {
-            StartCoroutine(IsRespawn());
+            print("바닥");
+            SetPosition(new Vector3(0, 3, -11));
         }
     }
 }

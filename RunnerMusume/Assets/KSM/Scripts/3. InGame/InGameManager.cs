@@ -20,13 +20,7 @@ public class InGameManager : MonoBehaviour
     public int numOfPlayer = 0;
     private const int MAX_PLAYER = 4;
 
-    [Header("Player Icon")]
-    public GameObject playerIconPool;       //플레이어 아이콘 넣을곳
-    public GameObject playerIconPrefab;           //플레이어 아이콘
-    public GameObject finalObject;
-
-    public Dictionary<SessionId, GamePlayer> players;
-    public Dictionary<SessionId, GamePlayerIcon> playersIcon;
+    private Dictionary<SessionId, GamePlayer> players;
     public GameObject startPoint;
 
     private Stack<SessionId> gameRecord;
@@ -117,7 +111,6 @@ public class InGameManager : MonoBehaviour
         }
 
         players = new Dictionary<SessionId, GamePlayer>();
-        playersIcon = new Dictionary<SessionId, GamePlayerIcon>();
         BackendMatchManager.GetInstance().SetPlayerSessionList(gamers);
 
         int index = 0;
@@ -126,19 +119,14 @@ public class InGameManager : MonoBehaviour
             GameObject player = Instantiate(playerPrefab, startPoint.transform.GetChild(index).position, Quaternion.identity, playerPool.transform);
             players.Add(sessionId, player.GetComponent<GamePlayer>());
 
-            GameObject playerIcon = Instantiate(playerIconPrefab, playerIconPool.transform);
-            playersIcon.Add(sessionId, playerIcon.GetComponent<GamePlayerIcon>());
-
             if (BackendMatchManager.GetInstance().IsMySessionId(sessionId))
             {
                 myPlayerIndex = sessionId;
                 players[sessionId].Initialize(true, myPlayerIndex, BackendMatchManager.GetInstance().GetNicknameBySessionId(myPlayerIndex));
-                playersIcon[sessionId].Initialize(true, myPlayerIndex);
             }
             else
             {
                 players[sessionId].Initialize(false, sessionId, BackendMatchManager.GetInstance().GetNicknameBySessionId(sessionId));
-                playersIcon[sessionId].Initialize(false, sessionId);
             }
             index++;
         }
@@ -227,6 +215,8 @@ public class InGameManager : MonoBehaviour
         {
 
             players[index].SetRotateVector(keyMessage.x);
+            players[index].isMove = true;
+            //players[index].isRotate = true;
             PlayerRotateMessage msg = new PlayerRotateMessage(index, playerPos, playerDir, keyMessage.x);
             BackendMatchManager.GetInstance().SendDataToInGame(msg);
         }
@@ -234,6 +224,8 @@ public class InGameManager : MonoBehaviour
         if((keyData & KeyEventCode.NO_ROTATE) == KeyEventCode.NO_ROTATE)
         {
             players[index].SetRotateVector(0);
+            players[index].isMove = true;
+            //players[index].isRotate = false;
             PlayerNoRotateMessage msg = new PlayerNoRotateMessage(index, playerPos, playerDir);
             BackendMatchManager.GetInstance().SendDataToInGame(msg);
         }
@@ -245,8 +237,10 @@ public class InGameManager : MonoBehaviour
             return;
 
         players[data.playerSession].SetRotateVector(data.key);
+        players[data.playerSession].isMove = true;
+        //players[data.playerSession].isRotate = true;
         players[data.playerSession].SetPosition(new Vector3(data.xPos, data.yPos, data.zPos));
-        players[data.playerSession].SetRotation(new Vector3(data.xDir, data.yDir, data.zDir));
+        //players[data.playerSession].SetRotation(new Vector3(data.xDir, data.yDir, data.zDir));
 
     }
 
@@ -255,8 +249,10 @@ public class InGameManager : MonoBehaviour
         if (BackendMatchManager.GetInstance().IsHost()) return;
 
         players[data.playerSession].SetRotateVector(0);
+        players[data.playerSession].isMove = true;
+        //players[data.playerSession].isRotate = false;
         players[data.playerSession].SetPosition(new Vector3(data.xPos, data.yPos, data.zPos));
-        players[data.playerSession].SetRotation(new Vector3(data.xDir, data.yDir, data.zDir));
+        //players[data.playerSession].SetRotation(new Vector3(data.xDir, data.yDir, data.zDir));
     }
 
     public void OnRecieveForLocal(KeyMessage keyMessage)

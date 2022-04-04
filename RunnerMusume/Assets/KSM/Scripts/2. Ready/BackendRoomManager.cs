@@ -112,10 +112,12 @@ public class BackendRoomManager : MonoBehaviour
             if (BackendMatchManager.GetInstance().IsMySessionId(sessionId))
             {
                 myPlayerIndex = sessionId;
+                print("³»²¿");
                 players[myPlayerIndex].Initialize(true, myPlayerIndex, BackendMatchManager.GetInstance().GetNicknameBySessionId(sessionId));
             }
             else
             {
+                print("´Ù¸¥³ð²¨");
                 players[sessionId].Initialize(false, sessionId, BackendMatchManager.GetInstance().GetNicknameBySessionId(sessionId));
             }
             index += 1;
