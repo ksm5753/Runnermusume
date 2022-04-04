@@ -44,7 +44,7 @@ public class LoginUI : MonoBehaviour
 
     void Start()
     {
-#if UNITY_ANDROID || UNITY_EDITOR
+#if UNITY_ANDROID
         googleButton.SetActive(true);
         appleButton.SetActive(false);
 #elif UNITY_IOS

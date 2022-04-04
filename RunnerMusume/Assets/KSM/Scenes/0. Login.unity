@@ -1470,6 +1470,7 @@ GameObject:
   - component: {fileID: 821882080}
   - component: {fileID: 821882081}
   - component: {fileID: 821882082}
+  - component: {fileID: 821882083}
   m_Layer: 0
   m_Name: ServerManager
   m_TagString: Untagged
@@ -1552,6 +1553,27 @@ MonoBehaviour:
   isJoinGameRoom: 0
   isSandBoxGame: 0
   hostSession: 0
+--- !u!114 &821882083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821882077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc458c9feb3046399eeec6753094046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onLogin:
+    m_PersistentCalls:
+      m_Calls: []
+  onCredentialState:
+    m_PersistentCalls:
+      m_Calls: []
+  onError:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &836505789
 GameObject:
   m_ObjectHideFlags: 0
