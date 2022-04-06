@@ -10,15 +10,20 @@ using GooglePlayGames.BasicApi;
 using UnityEngine.SocialPlatforms;
 using LitJson;
 using System.Collections;
+using System.Text;
 #if UNITY_IOS
-using UnityEngine.SignInWithApple;
+using AppleAuth;
+using AppleAuth.Enums;
+using AppleAuth.Extensions;
+using AppleAuth.Interfaces;
+using AppleAuth.Native;
 #endif
 
 public class RankItem //Rank Class
 {
-    public string nickname { get; set; } // 닉네임
-    public string score { get; set; }    // 점수
-    public string rank { get; set; }     // 랭크
+    public string nickname { get; set; } // ??????
+    public string score { get; set; }    // ????
+    public string rank { get; set; }     // ????
 }
 
 public class PlayerLevel
@@ -52,21 +57,26 @@ public class Shop
 
 public class BackendServerManager : MonoBehaviour
 {
+    
     [Header("<Backend SHEET CODE >")]
     public string equipmentCode = "";
     public string shopCode = "";
     public string levelCode = "";
 
-    private static BackendServerManager instance;   // 인스턴스
+    private static BackendServerManager instance;   // ????????
 
-    private string tempNickName;                        // 설정할 닉네임 (id와 동일)
-    public string myNickName { get; private set; } = string.Empty;  // 로그인한 계정의 닉네임
-    public string myIndate { get; private set; } = string.Empty;    // 로그인한 계정의 inDate
+    private IAppleAuthManager appleAuthManager; 
+
+    private string tempNickName;                        // ?????? ?????? (id?? ????)
+    public string myNickName { get; private set; } = string.Empty;  // ???????? ?????? ??????
+    public string myIndate { get; private set; } = string.Empty;    // ???????? ?????? inDate
     private Action<bool, string> loginSuccessFunc = null;
 
     private const string BackendError = "statusCode : {0}\nErrorCode : {1}\nMessage : {2}";
 
-    public string appleToken = ""; // SignInWithApple.cs에서 토큰값을 받을 문자열
+    public string appleToken = ""; // SignInWithApple.cs???? ???????? ???? ??????
+
+
 
     public string userIndate;
     public string user_ID;
@@ -74,18 +84,18 @@ public class BackendServerManager : MonoBehaviour
 
     public string rankUuid = "";
 
-    //장비 목록
+    //???? ????
     public List<Equipment> headEquipment = new List<Equipment>();
     public Equipment myEquipment = new Equipment();
 
-    //상점 목록
+    //???? ????
     public List<Shop> shopSheet = new List<Shop>();
 
-    //레벨 목록
+    //???? ????
     public List<PlayerLevel> levelSheet = new List<PlayerLevel>();
 
     //=================================================================================================
-    #region 서버 초기화
+    #region ???? ??????
     void Initialize()
     {
 #if UNITY_ANDROID
@@ -105,25 +115,94 @@ public class BackendServerManager : MonoBehaviour
         if (bro.IsSuccess())
         {
 
-#if UNITY_ANDROID //안드로이드에서만 작동
+#if UNITY_ANDROID //???????????????? ????
             Debug.Log("GoogleHash - " + Backend.Utils.GetGoogleHash());
 #endif
-#if !UNITY_EDITOR //안드로이드, iOS 환경에서만 작동
+#if !UNITY_EDITOR //??????????, iOS ?????????? ????
             GetVersionInfo();
+
+#endif
+
+#if UNITY_IOS
+            if (AppleAuthManager.IsCurrentPlatformSupported)
+            {
+                var deserializer = new PayloadDeserializer();
+                appleAuthManager = new AppleAuthManager(deserializer);
+            }
 #endif
         }
-        else Debug.LogError("뒤끝 초기화 실패 : " + bro);
+        else Debug.LogError("???? ?????? ???? : " + bro);
     }
-    #endregion
+#endregion
 
-    #region 버전 확인 (모바일)
+    public void AppleLogin(Action<bool, string> func)
+    {
+        var loginArgs = new AppleAuthLoginArgs(LoginOptions.IncludeEmail | LoginOptions.IncludeFullName);
+
+        this.appleAuthManager.LoginWithAppleId(
+            loginArgs,
+            credential =>
+            {
+        // Obtained credential, cast it to IAppleIDCredential
+        var appleIdCredential = credential as IAppleIDCredential;
+                if (appleIdCredential != null)
+                {
+            // Apple User ID
+            // You should save the user ID somewhere in the device
+            var userId = appleIdCredential.User;
+                    PlayerPrefs.SetString(appleToken, userId);
+
+            // Email (Received ONLY in the first login)
+            var email = appleIdCredential.Email;
+
+            // Full name (Received ONLY in the first login)
+            var fullName = appleIdCredential.FullName;
+
+            // Identity token
+            var identityToken = Encoding.UTF8.GetString(
+                        appleIdCredential.IdentityToken,
+                        0,
+                        appleIdCredential.IdentityToken.Length);
+
+            // Authorization code
+            var authorizationCode = Encoding.UTF8.GetString(
+                        appleIdCredential.AuthorizationCode,
+                        0,
+                        appleIdCredential.AuthorizationCode.Length);
+
+                    // And now you have all the information to create/login a user in your system
+                    Enqueue(Backend.BMember.AuthorizeFederation, identityToken, FederationType.Apple, "apple ????", callback =>
+                    {
+                        if (callback.IsSuccess())
+                        {
+                            loginSuccessFunc = func;
+                            Debug.Log("Apple ???? ????");
+
+                            OnBackendAuthorized();
+                            return;
+                        }
+
+                        Debug.LogError("Apple ???? ????\n" + callback.ToString());
+                        loginSuccessFunc(false, string.Format(BackendError,
+                            callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
+                    });
+                }
+            },
+            error =>
+            {
+        // Something went wrong
+        var authorizationErrorCode = error.GetAuthorizationErrorCode();
+            });
+    }
+    
+#region ???? ???? (??????)
     private void GetVersionInfo()
     {
         Enqueue(Backend.Utils.GetLatestVersion, callback =>
         {
             if (callback.IsSuccess() == false)
             {
-                Debug.LogError("버전정보를 불러오는 데 실패하였습니다.\n" + callback);
+                Debug.LogError("?????????? ???????? ?? ??????????????.\n" + callback);
                 return;
             }
 
@@ -135,86 +214,86 @@ public class BackendServerManager : MonoBehaviour
             var result = server.CompareTo(client);
             if (result == 0)
             {
-                // 0 이면 두 버전이 일치
+                // 0 ???? ?? ?????? ????
                 return;
             }
             else if (result < 0)
             {
-                // 0 미만이면 server 버전이 client 이전 버전
-                // 검수를 넣었을 경우 여기에 해당된다.
-                // ex) 검수버전 3.0.0, 라이브에 운용되고 있는 버전 2.0.0, 콘솔 버전 2.0.0
+                // 0 ???????? server ?????? client ???? ????
+                // ?????? ?????? ???? ?????? ????????.
+                // ex) ???????? 3.0.0, ???????? ???????? ???? ???? 2.0.0, ???? ???? 2.0.0
                 return;
             }
             else
             {
-                // 0보다 크면 server 버전이 client 이후 버전
+                // 0???? ???? server ?????? client ???? ????
                 if (client == null)
                 {
-                    // 클라이언트가 null인 경우 예외처리
-                    Debug.LogError("클라이언트 버전정보가 null 입니다.");
+                    // ???????????? null?? ???? ????????
+                    Debug.LogError("?????????? ?????????? null ??????.");
                     return;
                 }
             }
 
-            // 버전 업데이트 팝업
+            // ???? ???????? ????
             //LoginUI.GetInstance().OpenUpdatePopup();
         });
     }
-    #endregion
+#endregion
 
-    #region 토큰으로 로그인
+#region ???????? ??????
     public void BackendTokenLogin(Action<bool, string> func)
     {
         Enqueue(Backend.BMember.LoginWithTheBackendToken, callback =>
         {
             if (callback.IsSuccess())
             {
-                Debug.Log("토큰 로그인 성공");
-                loginSuccessFunc = func; //로그인 성공 여부 데이터 입력
+                Debug.Log("???? ?????? ????");
+                loginSuccessFunc = func; //?????? ???? ???? ?????? ????
 
-                OnBackendAuthorized(); //사전 유저 불러오기
+                OnBackendAuthorized(); //???? ???? ????????
                 return;
             }
 
-            Debug.Log("토큰 로그인 실패\n" + callback.ToString());
-            func(false, string.Empty); //실패시 토큰 초기화
+            Debug.Log("???? ?????? ????\n" + callback.ToString());
+            func(false, string.Empty); //?????? ???? ??????
         });
     }
-    #endregion
+#endregion
 
-    #region 구글 페더레이션 로그인 / 회원가입
+#region ???? ?????????? ?????? / ????????
     public void GoogleAuthorizeFederation(Action<bool, string> func)
     {
-#if UNITY_ANDROID //안드로이드 일 경우
+#if UNITY_ANDROID //?????????? ?? ????
 
-        if (Social.localUser.authenticated) // 이미 gpgs 로그인이 된 경우
+        if (Social.localUser.authenticated) // ???? gpgs ???????? ?? ????
         {
             var token = GetFederationToken();
-            if (token.Equals(string.Empty)) //토큰이 존재하지 않을 경우
+            if (token.Equals(string.Empty)) //?????? ???????? ???? ????
             {
-                Debug.LogError("GPGS 토큰이 존재하지 않습니다.");
-                func(false, "GPGS 인증을 실패하였습니다.\nGPGS 토큰이 존재하지 않습니다.");
+                Debug.LogError("GPGS ?????? ???????? ????????.");
+                func(false, "GPGS ?????? ??????????????.\nGPGS ?????? ???????? ????????.");
                 return;
             }
 
-            Enqueue(Backend.BMember.AuthorizeFederation, token, FederationType.Google, "gpgs 인증", callback =>
+            Enqueue(Backend.BMember.AuthorizeFederation, token, FederationType.Google, "gpgs ????", callback =>
             {
                 if (callback.IsSuccess())
                 {
-                    Debug.Log("GPGS 인증 성공");
+                    Debug.Log("GPGS ???? ????");
                     loginSuccessFunc = func;
 
-                    OnBackendAuthorized(); //사전 유저 정보 불러오기
+                    OnBackendAuthorized(); //???? ???? ???? ????????
                     return;
                 }
 
-                Debug.LogError("GPGS 인증 실패\n" + callback.ToString());
+                Debug.LogError("GPGS ???? ????\n" + callback.ToString());
                 func(false, string.Format(BackendError,
                     callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
             });
         }
 
-        else // gpgs 로그인을 해야하는 경우
+        else // gpgs ???????? ???????? ????
         {
             Social.localUser.Authenticate((bool success) =>
             {
@@ -223,82 +302,49 @@ public class BackendServerManager : MonoBehaviour
                     var token = GetFederationToken();
                     if (token.Equals(string.Empty))
                     {
-                        Debug.LogError("GPGS 토큰이 존재하지 않습니다.");
-                        func(false, "GPGS 인증을 실패하였습니다.\nGPGS 토큰이 존재하지 않습니다.");
+                        Debug.LogError("GPGS ?????? ???????? ????????.");
+                        func(false, "GPGS ?????? ??????????????.\nGPGS ?????? ???????? ????????.");
                         return;
                     }
 
-                    Enqueue(Backend.BMember.AuthorizeFederation, token, FederationType.Google, "gpgs 인증", callback =>
+                    Enqueue(Backend.BMember.AuthorizeFederation, token, FederationType.Google, "gpgs ????", callback =>
                     {
                         if (callback.IsSuccess())
                         {
-                            Debug.Log("GPGS 인증 성공");
+                            Debug.Log("GPGS ???? ????");
                             loginSuccessFunc = func;
 
-                            OnBackendAuthorized(); //사전 유저 정보 불러오기
+                            OnBackendAuthorized(); //???? ???? ???? ????????
                             return;
                         }
 
-                        Debug.LogError("GPGS 인증 실패\n" + callback.ToString());
+                        Debug.LogError("GPGS ???? ????\n" + callback.ToString());
                         func(false, string.Format(BackendError,
                             callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
                     });
                 }
                 else
                 {
-                    Debug.LogError("GPGS 로그인 실패");
-                    func(false, "GPGS 인증을 실패하였습니다.\nGPGS 로그인을 실패하였습니다.");
+                    Debug.LogError("GPGS ?????? ????");
+                    func(false, "GPGS ?????? ??????????????.\nGPGS ???????? ??????????????.");
                     return;
                 }
             });
         }
 #endif
     }
-    #endregion
+#endregion
 
-    #region 애플 페더레이션 로그인 / 회원가입
-    public void AppleAuthorizeFederation(Action<bool, string> func)
-    {
-#if UNITY_IOS
-        loginSuccessFunc = func;
-        var siwa = gameObject.GetComponent<SignInWithApple>();
-        siwa.Login(AppleFedeCallback);
-#endif
-    }
-
-#if UNITY_IOS
-    private void AppleFedeCallback(SignInWithApple.CallbackArgs args)
-    {
-        Debug.Log("애플 토큰으로 뒤끝에 로그인");
-        Enqueue(Backend.BMember.AuthorizeFederation, appleToken, FederationType.Apple, "apple 인증", callback =>
-        {
-            if (callback.IsSuccess())
-            {
-                Debug.Log("Apple 인증 성공");
-
-                OnBackendAuthorized();
-                return;
-            }
-
-            Debug.LogError("Apple 인증 실패\n" + callback.ToString());
-            loginSuccessFunc(false, string.Format(BackendError,
-                callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
-        });
-
-    }
-#endif
-    #endregion
-
-    #region 구글 토큰 받기
+#region ???? ???? ????
     private string GetFederationToken()
     {
 #if UNITY_ANDROID
         if (!PlayGamesPlatform.Instance.localUser.authenticated)
         {
-            Debug.LogError("GPGS에 접속되어있지 않습니다. PlayGamesPlatform.Instance.localUser.authenticated :  fail");
+            Debug.LogError("GPGS?? ???????????? ????????. PlayGamesPlatform.Instance.localUser.authenticated :  fail");
             return string.Empty;
         }
-        // 유저 토큰 받기
+        // ???? ???? ????
         string _IDtoken = PlayGamesPlatform.Instance.GetIdToken();
         tempNickName = PlayGamesPlatform.Instance.GetUserDisplayName();
         Debug.Log(tempNickName);
@@ -310,49 +356,49 @@ public class BackendServerManager : MonoBehaviour
         return string.Empty;
 #endif
     }
-    #endregion
+#endregion
 
-    #region 닉네임 값 입력
+#region ?????? ?? ????
     public void UpdateNickname(string nickname, Action<bool, string> func)
     {
         Enqueue(Backend.BMember.UpdateNickname, nickname, bro =>
         {
-            // 닉네임이 없으면 매치서버 접속이 안됨
+            // ???????? ?????? ???????? ?????? ????
             if (!bro.IsSuccess())
             {
-                Debug.LogError("닉네임 생성 실패\n" + bro.ToString());
+                Debug.LogError("?????? ???? ????\n" + bro.ToString());
                 func(false, string.Format(BackendError,
                     bro.GetStatusCode(), bro.GetErrorCode(), bro.GetMessage()));
                 return;
             }
             loginSuccessFunc = func;
-            OnBackendAuthorized(); //유저 사전 정보 불러오기
+            OnBackendAuthorized(); //???? ???? ???? ????????
         });
     }
-    #endregion
+#endregion
 
-    #region 게스트 로그인
+#region ?????? ??????
     public void GuestLogin(Action<bool, string> func)
     {
         Enqueue(Backend.BMember.GuestLogin, callback =>
         {
             if (callback.IsSuccess())
             {
-                Debug.Log("게스트 로그인 성공");
+                Debug.Log("?????? ?????? ????");
                 loginSuccessFunc = func;
 
-                OnBackendAuthorized(); //유저 사전 정보 불러오기
+                OnBackendAuthorized(); //???? ???? ???? ????????
                 return;
             }
 
-            Debug.Log("게스트 로그인 실패\n" + callback);
+            Debug.Log("?????? ?????? ????\n" + callback);
             func(false, string.Format(BackendError,
                 callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
         });
     }
-    #endregion
+#endregion
 
-    #region 커스텀 회원가입
+#region ?????? ????????
     public void CustomSignIn(string id, string pw, Action<bool, string> func)
     {
         tempNickName = id;
@@ -360,45 +406,45 @@ public class BackendServerManager : MonoBehaviour
         {
             if (callback.IsSuccess())
             {
-                Debug.Log("커스텀 회원가입 성공");
-                loginSuccessFunc = func; //로그인 여부 데이터 입력
+                Debug.Log("?????? ???????? ????");
+                loginSuccessFunc = func; //?????? ???? ?????? ????
 
-                OnBackendAuthorized(); //사전 유저 정보 불러오기
+                OnBackendAuthorized(); //???? ???? ???? ????????
                 return;
             }
 
-            Debug.LogError("커스텀 회원가입 실패\n" + callback.ToString());
+            Debug.LogError("?????? ???????? ????\n" + callback.ToString());
             func(false, string.Format(BackendError,
                 callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
         });
     }
-    #endregion
+#endregion
 
-    #region 로그아웃
+#region ????????
     public void LogOut()
     {
         Backend.BMember.Logout();
     }
-    #endregion
+#endregion
 
-    #region 실제 유저 정보 불러오기
+#region ???? ???? ???? ????????
     private void OnBackendAuthorized()
     {
         Enqueue(Backend.BMember.GetUserInfo, callback =>
         {
             if (!callback.IsSuccess())
             {
-                Debug.LogError("유저 정보 불러오기 실패\n" + callback);
+                Debug.LogError("???? ???? ???????? ????\n" + callback);
                 loginSuccessFunc(false, string.Format(BackendError,
                 callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
                 return;
             }
-            Debug.Log("유저정보\n" + callback);
+            Debug.Log("????????\n" + callback);
 
             var info = callback.GetReturnValuetoJSON()["row"];
             
 
-            if (info["nickname"] == null) //닉네임 값이 없을 경우 닉네임 적는 UI띄우기
+            if (info["nickname"] == null) //?????? ???? ???? ???? ?????? ???? UI??????
             {
                 LoginUI.GetInstance().ActiveNicknameObject();
                 return;
@@ -412,17 +458,17 @@ public class BackendServerManager : MonoBehaviour
                 InitialUserCheck();
                 //GetEquipment();
                 //RefreshInfo(loginSuccessFunc);
-                //로그인 성공했으므로 매칭 리스트 값 불러옴
+                //?????? ???????????? ???? ?????? ?? ??????
                 BackendMatchManager.GetInstance().GetMatchList(loginSuccessFunc);
 
                 
             }
         });
     }
-    #endregion
+#endregion
 
     //=================================================================================================
-    #region 신규 유저 체크
+#region ???? ???? ????
     public void InitialUserCheck()
     {
         var bro = Backend.GameData.Get("User", new Where());
@@ -441,7 +487,7 @@ public class BackendServerManager : MonoBehaviour
                 param.Add("MaxEnergy", 20);
                 param.Add("Gold", 0);
                 param.Add("Diamond", 0);
-                param.Add("Head", "연습용");
+                param.Add("Head", "??????");
 
                 Backend.GameData.Insert("User", param);
 
@@ -450,9 +496,9 @@ public class BackendServerManager : MonoBehaviour
             userIndate = userData[0]["inDate"]["S"].ToString();
         }
     }
-    #endregion
+#endregion
 
-    #region 유저 정보 새로고침
+#region ???? ???? ????????
     public void RefreshInfo()
     {
         Enqueue(Backend.GameData.Get, "User", new Where(), callback =>
@@ -489,9 +535,9 @@ public class BackendServerManager : MonoBehaviour
             }
         });
     }
-    #endregion
+#endregion
 
-    #region 레벨 시트 불러오기
+#region ???? ???? ????????
     public void GetLevelSheet(Action<bool, string> func)
     {
         Enqueue(Backend.Chart.GetChartContents, levelCode, callback =>
@@ -524,9 +570,9 @@ public class BackendServerManager : MonoBehaviour
             }
         });
     }
-    #endregion
+#endregion
 
-    #region 상점 시트 불러오기
+#region ???? ???? ????????
     public void GetShopSheet(Action<bool, string> func)
     {
         Enqueue(Backend.Chart.GetChartContents, shopCode, callback =>
@@ -557,14 +603,14 @@ public class BackendServerManager : MonoBehaviour
             }
         });
     }
-    #endregion
+#endregion
 
-    #region 장비 차트 불러오기
+#region ???? ???? ????????
     public void GetEquipment(Action<bool, string> func)
     {
         Enqueue(Backend.Chart.GetChartContents, equipmentCode, bro =>
         {
-            // 이후 작업
+            // ???? ????
             if (bro.IsSuccess())
             {
 
@@ -598,9 +644,9 @@ public class BackendServerManager : MonoBehaviour
             }
         });
     }
-    #endregion
+#endregion
 
-    #region 장비 적용
+#region ???? ????
     public void SetEquipment()
     {
         for(int i = 0; i < headEquipment.Count; i++)
@@ -616,9 +662,9 @@ public class BackendServerManager : MonoBehaviour
 
         print(myEquipment.bestSpeed + ", " + myEquipment.acceleration + ", " + myEquipment.luck + ", " + myEquipment.power);
     }
-    #endregion
+#endregion
 
-    #region 에너지 저장(상점)
+#region ?????? ????(????)
     public void SaveEnergy(int num, Action<bool, string> func)
     {
         Param param = new Param();
@@ -639,9 +685,9 @@ public class BackendServerManager : MonoBehaviour
             }
         });
     }
-    #endregion
+#endregion
 
-    #region 에너지 저장
+#region ?????? ????
     public void SaveEnergyInfo()
     {
         if(userIndate == string.Empty)
@@ -664,9 +710,9 @@ public class BackendServerManager : MonoBehaviour
             }
         });
     }
-    #endregion
+#endregion
 
-    #region 재화 저장
+#region ???? ????
     public void SaveGold(int money, Action<bool, string> func)
     {
         Param param = new Param();
@@ -706,7 +752,7 @@ public class BackendServerManager : MonoBehaviour
             }
         });
     }
-    #endregion
+#endregion
 
     void Awake()
     {
@@ -715,7 +761,7 @@ public class BackendServerManager : MonoBehaviour
             Destroy(instance);
         }
         instance = this;
-        // 모든 씬에서 유지
+        // ???? ?????? ????
         DontDestroyOnLoad(this.gameObject);
     }
 
@@ -723,7 +769,7 @@ public class BackendServerManager : MonoBehaviour
     {
         if (instance == null)
         {
-            Debug.LogError("BackendServerManager 인스턴스가 존재하지 않습니다.");
+            Debug.LogError("BackendServerManager ?????????? ???????? ????????.");
             return null;
         }
 
@@ -732,13 +778,18 @@ public class BackendServerManager : MonoBehaviour
 
     void Start()
     {
-        Initialize(); //서버 초기화
+        Initialize(); //???? ??????
     }
 
     void Update()
     {
-        //비동기함수 풀링
+        //?????????? ????
         Backend.AsyncPoll();
+
+        if (this.appleAuthManager != null)
+        {
+            this.appleAuthManager.Update();
+        }
     }
 
 }

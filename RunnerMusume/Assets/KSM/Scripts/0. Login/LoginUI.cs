@@ -8,26 +8,26 @@ using Battlehub.Dispatcher;
 public class LoginUI : MonoBehaviour
 {
     [Header("Start Button")]
-    public GameObject startButton; //시작 버튼
+    public GameObject startButton; //???? ????
 
     [Header("Login Object")]
     [Space(10f)]
-    public GameObject loginObject; //로그인 창
+    public GameObject loginObject; //?????? ??
     public GameObject googleButton;
     public GameObject appleButton;
 
     [Header("Nickname Object")]
     [Space(10f)]
-    public GameObject nicknameObject; //닉네임 창
-    public InputField nicknameInputField; //닉네임 입력
+    public GameObject nicknameObject; //?????? ??
+    public InputField nicknameInputField; //?????? ????
 
     [Space(10f)]
     [Header("Error Object")]
-    public GameObject errorObject; //에러 창
+    public GameObject errorObject; //???? ??
 
     [Space(10f)]
     [Header("Loading Object")]
-    public GameObject loadingObject; //로딩 창
+    public GameObject loadingObject; //???? ??
 
     private static LoginUI instance;
 
@@ -54,7 +54,7 @@ public class LoginUI : MonoBehaviour
     }
 
     //======================================================================
-    #region 해상도 대응
+    #region ?????? ????
     public void SetScale()
     {
         loadingObject.SetActive(false);
@@ -65,7 +65,7 @@ public class LoginUI : MonoBehaviour
     }
     #endregion
     //======================================================================
-    #region 터치 후 자동 로그인
+    #region ???? ?? ???? ??????
     public void TouchStart()
     {
         loadingObject.SetActive(true);
@@ -75,14 +75,14 @@ public class LoginUI : MonoBehaviour
             {
                 if (result)
                 {
-                    //씬 전환
+                    //?? ????
                     GameManager.GetInstance().ChangeState(GameManager.GameState.Lobby);
                     return;
                 }
                 loadingObject.SetActive(false);
                 if (!error.Equals(string.Empty))
                 {
-                    errorObject.GetComponentInChildren<Text>().text = "유저 정보 불러오기 실패 \n\n" + error;
+                    errorObject.GetComponentInChildren<Text>().text = "???? ???? ???????? ???? \n\n" + error;
                     errorObject.SetActive(true);
                     return;
                 }
@@ -95,7 +95,7 @@ public class LoginUI : MonoBehaviour
     }
     #endregion
     //======================================================================
-    #region 구글 로그인
+    #region ???? ??????
     public void GoogleFederation()
     {
         if (errorObject.activeSelf)
@@ -109,42 +109,42 @@ public class LoginUI : MonoBehaviour
                 if (!result)
                 {
                     loadingObject.SetActive(false);
-                    errorObject.GetComponentInChildren<Text>().text = "로그인 에러\n\n" + error;
+                    errorObject.GetComponentInChildren<Text>().text = "?????? ????\n\n" + error;
                     errorObject.SetActive(true);
                     return;
                 }
 
-                //로비 씬 이동
+                //???? ?? ????
                 GameManager.GetInstance().ChangeState(GameManager.GameState.Lobby);
             });
         });
     }
     #endregion
     //======================================================================
-    #region 애플 로그인
+    #region ???? ??????
     public void AppleFederation()
     {
         if (errorObject.activeSelf)
             return;
 
         loadingObject.SetActive(true);
-        BackendServerManager.GetInstance().AppleAuthorizeFederation((bool result, string error) =>
+        BackendServerManager.GetInstance().AppleLogin((bool result, string error) =>
         {
             if (!result)
             {
                 loadingObject.SetActive(false);
-                errorObject.GetComponentInChildren<Text>().text = "로그인 에러\n\n" + error;
+                errorObject.GetComponentInChildren<Text>().text = "?????? ????\n\n" + error;
                 errorObject.SetActive(true);
                 return;
             }
 
-            //로비 씬 이동
+            //???? ?? ????
             GameManager.GetInstance().ChangeState(GameManager.GameState.Lobby);
         });
     }
     #endregion
     //======================================================================
-    #region 게스트 로그인
+    #region ?????? ??????
     public void GuestLogin()
     {
         if (errorObject.activeSelf)
@@ -156,18 +156,18 @@ public class LoginUI : MonoBehaviour
             if (!result)
             {
                 loadingObject.SetActive(false);
-                errorObject.GetComponentInChildren<Text>().text = "로그인 에러\n\n" + error;
+                errorObject.GetComponentInChildren<Text>().text = "?????? ????\n\n" + error;
                 errorObject.SetActive(true);
                 return;
             }
 
-            //로비 씬 이동
+            //???? ?? ????
             GameManager.GetInstance().ChangeState(GameManager.GameState.Lobby);
         });
     }
     #endregion
     //======================================================================
-    #region 닉네임 설정
+    #region ?????? ????
     public void UpdateNickname()
     {
         if (errorObject.activeSelf)
@@ -175,7 +175,7 @@ public class LoginUI : MonoBehaviour
         string nickname = nicknameInputField.text;
         if (nickname.Equals(string.Empty))
         {
-            errorObject.GetComponentInChildren<Text>().text = "닉네임을 먼저 입력해주세요";
+            errorObject.GetComponentInChildren<Text>().text = "???????? ???? ????????????";
             errorObject.SetActive(true);
             return;
         }
@@ -187,19 +187,19 @@ public class LoginUI : MonoBehaviour
                 if (!result)
                 {
                     loadingObject.SetActive(false);
-                    errorObject.GetComponentInChildren<Text>().text = "닉네임 생성 오류\n\n" + error;
+                    errorObject.GetComponentInChildren<Text>().text = "?????? ???? ????\n\n" + error;
                     errorObject.SetActive(true);
                     return;
                 }
 
-                //로비 씬 이동
+                //???? ?? ????
                 GameManager.GetInstance().ChangeState(GameManager.GameState.Lobby);
             });
         });
     }
     #endregion
     //======================================================================
-    #region 닉네임 활성
+    #region ?????? ????
     public void ActiveNicknameObject()
     {
         Dispatcher.Current.BeginInvoke(() =>
@@ -213,7 +213,7 @@ public class LoginUI : MonoBehaviour
     }
     #endregion
     //======================================================================
-    #region 커스텀 회원가입
+    #region ?????? ????????
     public void SignUp()
     {
         if (errorObject.activeSelf)
@@ -225,7 +225,7 @@ public class LoginUI : MonoBehaviour
 
         if (id.Equals(string.Empty) || pw.Equals(string.Empty))
         {
-            errorObject.GetComponentInChildren<Text>().text = "ID 혹은 PW 를 먼저 입력해주세요.";
+            errorObject.GetComponentInChildren<Text>().text = "ID ???? PW ?? ???? ????????????.";
             errorObject.SetActive(true);
             return;
         }
@@ -238,11 +238,11 @@ public class LoginUI : MonoBehaviour
                 if (!result)
                 {
                     loadingObject.SetActive(false);
-                    errorObject.GetComponentInChildren<Text>().text = "회원가입 에러\n\n" + error;
+                    errorObject.GetComponentInChildren<Text>().text = "???????? ????\n\n" + error;
                     errorObject.SetActive(true);
                     return;
                 }
-                //로비 씬 이동
+                //???? ?? ????
                 GameManager.GetInstance().ChangeState(GameManager.GameState.Lobby);
             });
         });
